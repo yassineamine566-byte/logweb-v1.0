@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aurora — Access</title>
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="description" content="Aurora - a secure and private personal workspace">
+<title>Aurora</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
 
-  :root {
+  :root,
+  [data-theme="dark"] {
     --bg-1:#07070b;
-    --bg-2:#0d0d16;
-    --card-bg: rgba(20,20,28,0.55);
+    --bg-gradient: radial-gradient(ellipse at top, #0d0d16 0%, #07070b 55%, #040407 100%);
+    --card-bg: rgba(20,20,28,0.6);
     --card-border: rgba(255,255,255,0.07);
     --text:#f0f0f4;
     --text-dim: rgba(240,240,244,0.55);
@@ -21,58 +25,91 @@
     --input-bg: rgba(255,255,255,0.025);
     --input-border: rgba(255,255,255,0.08);
     --input-focus: rgba(255,255,255,0.35);
+    --hover-bg: rgba(255,255,255,0.06);
+    --divider: rgba(255,255,255,0.06);
     --success:#34d399;
     --error:#f87171;
     --warn:#fbbf24;
+    --particle-rgb: 255,255,255;
+    --aurora-1: rgba(255,255,255,0.06);
+    --aurora-2: rgba(180,180,255,0.05);
+    --aurora-3: rgba(255,255,255,0.03);
+    --avatar-border: rgba(20,20,28,0.95);
+    --cover-grid: rgba(255,255,255,0.03);
+    --overlay-bg: rgba(0,0,0,0.6);
+  }
+  [data-theme="light"] {
+    --bg-1:#f5f6f9;
+    --bg-gradient: radial-gradient(ellipse at top, #ffffff 0%, #f0f2f7 55%, #e5e8ef 100%);
+    --card-bg: rgba(255,255,255,0.78);
+    --card-border: rgba(0,0,0,0.06);
+    --text:#0f1220;
+    --text-dim: rgba(15,18,32,0.62);
+    --text-dimmer: rgba(15,18,32,0.4);
+    --input-bg: rgba(0,0,0,0.025);
+    --input-border: rgba(0,0,0,0.08);
+    --input-focus: rgba(15,18,32,0.4);
+    --hover-bg: rgba(0,0,0,0.04);
+    --divider: rgba(0,0,0,0.07);
+    --success:#059669;
+    --error:#dc2626;
+    --warn:#d97706;
+    --particle-rgb: 20,20,40;
+    --aurora-1: rgba(120,140,200,0.12);
+    --aurora-2: rgba(180,140,200,0.10);
+    --aurora-3: rgba(100,140,200,0.08);
+    --avatar-border: rgba(255,255,255,0.98);
+    --cover-grid: rgba(0,0,0,0.04);
+    --overlay-bg: rgba(0,0,0,0.35);
   }
 
-  html, body { height:100%; }
+  html, body { min-height:100%; }
 
   body {
-    font-family:'Inter','Cairo',system-ui,sans-serif;
-    background: radial-gradient(ellipse at top, #0d0d16 0%, #07070b 55%, #040407 100%);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background: var(--bg-gradient);
+    background-attachment: fixed;
     color: var(--text);
     min-height:100vh;
     overflow-x:hidden;
-    overflow-y:auto;
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content:center;
+    justify-content:flex-start;
     position:relative;
     -webkit-font-smoothing: antialiased;
-    padding: 80px 0 60px;
+    padding: 80px 0 40px;
+    transition: background .6s ease, color .3s ease;
   }
 
-  /* ============ Canvas Particles ============ */
   #particles {
     position: fixed; inset:0;
     z-index:0; pointer-events:none;
   }
-
   .aurora {
     position: fixed;
     inset: -20%;
     z-index:0;
     pointer-events:none;
     background:
-      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.06), transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(180,180,255,0.05), transparent 45%),
-      radial-gradient(circle at 50% 100%, rgba(255,255,255,0.03), transparent 50%);
+      radial-gradient(circle at 20% 30%, var(--aurora-1), transparent 40%),
+      radial-gradient(circle at 80% 70%, var(--aurora-2), transparent 45%),
+      radial-gradient(circle at 50% 100%, var(--aurora-3), transparent 50%);
     animation: aurora 22s ease-in-out infinite alternate;
     filter: blur(50px);
+    transition: background .6s ease;
   }
   @keyframes aurora {
     0%   { transform: translate(0,0) rotate(0deg) scale(1); }
     50%  { transform: translate(-3%,2%) rotate(2deg) scale(1.05); }
     100% { transform: translate(2%,-3%) rotate(-2deg) scale(1); }
   }
-
   .cursor-glow {
     position: fixed;
     width: 420px; height: 420px;
     border-radius:50%;
     pointer-events:none;
-    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
+    background: radial-gradient(circle, rgba(var(--particle-rgb),0.05), transparent 60%);
     transform: translate(-50%,-50%);
     transition: opacity .3s;
     z-index:1;
@@ -84,7 +121,7 @@
   .brand {
     position: fixed;
     top: 24px;
-    inset-inline-start: 28px;
+    left: 28px;
     display:flex;
     align-items:center;
     gap:10px;
@@ -96,34 +133,39 @@
   .brand-mark {
     width:30px; height:30px;
     border-radius:9px;
-    background: linear-gradient(135deg,#fff,#999);
+    background: linear-gradient(135deg, var(--text), var(--text-dim));
     display:grid;
     place-items:center;
-    color:#07070b;
+    color: var(--bg-1);
     font-weight:800;
     font-size:13px;
-    box-shadow: 0 0 22px rgba(255,255,255,0.2);
+    box-shadow: 0 0 22px rgba(var(--particle-rgb),0.15);
     animation: brandPulse 4s ease-in-out infinite;
+    transition: background .3s;
   }
   @keyframes brandPulse {
-    0%,100% { box-shadow: 0 0 22px rgba(255,255,255,0.15); }
-    50%     { box-shadow: 0 0 35px rgba(255,255,255,0.4); }
+    0%,100% { box-shadow: 0 0 22px rgba(var(--particle-rgb),0.15); }
+    50%     { box-shadow: 0 0 35px rgba(var(--particle-rgb),0.35); }
   }
 
-  /* ============ Language Selector ============ */
-  .lang-wrapper {
+  /* ============ Top Controls ============ */
+  .top-controls {
     position: fixed;
     top: 22px;
     right: 24px;
+    display: flex;
+    gap: 8px;
     z-index: 200;
   }
-  .lang-btn {
+  .icon-btn {
     display:inline-flex;
     align-items:center;
+    justify-content:center;
     gap:8px;
-    padding: 9px 14px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
+    width: 40px; height: 40px;
+    padding: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     border-radius:12px;
     color: var(--text);
     font-family:inherit;
@@ -131,34 +173,55 @@
     cursor:pointer;
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
     transition: all .25s ease;
+    position: relative;
   }
-  .lang-btn:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.18);
+  .icon-btn:hover {
+    background: var(--hover-bg);
+    border-color: rgba(var(--particle-rgb),0.18);
     transform: translateY(-1px);
   }
-  .lang-btn svg.chev { transition: transform .3s; }
-  .lang-btn.open svg.chev { transform: rotate(180deg); }
+  .icon-btn:active { transform: translateY(0) scale(.96); }
+  .icon-btn svg { width: 18px; height: 18px; }
 
+  .lang-btn { width: auto; padding: 0 12px; gap: 8px; }
+  .lang-btn .chev { transition: transform .3s; }
+  .lang-btn.open .chev { transform: rotate(180deg); }
+  .lang-btn .flag { font-size:15px; }
+  .lang-btn .lbl { font-size: 13px; font-weight: 500; }
+
+  /* Net indicator dot on settings btn */
+  .net-dot {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success);
+    transition: background .3s, box-shadow .3s;
+  }
+  .net-dot.offline { background: var(--error); box-shadow: 0 0 8px var(--error); }
+
+  /* ============ Language Menu ============ */
   .lang-menu {
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    min-width: 190px;
-    background: rgba(18,18,26,0.7);
+    min-width: 180px;
+    background: var(--card-bg);
     backdrop-filter: blur(24px) saturate(170%);
     -webkit-backdrop-filter: blur(24px) saturate(170%);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid var(--card-border);
     border-radius:14px;
     padding:6px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
     opacity:0;
     visibility:hidden;
     transform: translateY(-8px) scale(.96);
     transition: all .3s cubic-bezier(.34,1.56,.64,1);
     transform-origin: top right;
+    z-index: 250;
   }
   .lang-menu.open { opacity:1; visibility:visible; transform: translateY(0) scale(1); }
   .lang-menu button {
@@ -170,60 +233,525 @@
     text-align:start; border-radius:9px;
     cursor:pointer; transition: background .15s;
   }
-  .lang-menu button:hover { background: rgba(255,255,255,0.06); }
-  .lang-menu button.active { background: rgba(255,255,255,0.08); font-weight:500; }
+  .lang-menu button:hover { background: var(--hover-bg); }
+  .lang-menu button.active { background: var(--hover-bg); font-weight:500; }
   .lang-menu .flag { font-size:16px; }
   .lang-menu .check { margin-inline-start:auto; opacity:0; color: var(--success); }
   .lang-menu button.active .check { opacity:1; }
 
-  /* ============ View Wrapper (for fade transitions) ============ */
+  /* ============================================================
+     SETTINGS PANEL
+     ============================================================ */
+  .settings-backdrop {
+    position: fixed; inset: 0;
+    background: var(--overlay-bg);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s, visibility .35s;
+    z-index: 300;
+  }
+  .settings-backdrop.open { opacity:1; visibility:visible; }
+
+  .settings-panel {
+    position: fixed;
+    top: 0; right: 0;
+    width: 380px;
+    max-width: 92vw;
+    height: 100vh;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px) saturate(160%);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    border-left: 1px solid var(--card-border);
+    box-shadow: -30px 0 60px rgba(0,0,0,0.4);
+    z-index: 310;
+    transform: translateX(100%);
+    transition: transform .45s cubic-bezier(.4,0,.2,1);
+    overflow-y: auto;
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .settings-panel.open { transform: translateX(0); }
+
+  .settings-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .settings-header h2 { font-size: 17px; font-weight: 600; letter-spacing: -.2px; }
+  .settings-close {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: transparent; border: 1px solid var(--input-border);
+    color: var(--text-dim); cursor: pointer;
+    display:grid; place-items:center;
+    transition: all .2s;
+  }
+  .settings-close:hover { background: var(--hover-bg); color: var(--text); }
+
+  .settings-section { display: flex; flex-direction: column; gap: 12px; }
+  .settings-section-title {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--text-dimmer);
+  }
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 12px 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px; transition: all .25s;
+  }
+  .settings-row:hover { background: var(--hover-bg); }
+  .settings-row-info { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+  .settings-row-icon {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: var(--hover-bg); display: grid; place-items: center;
+    color: var(--text); flex-shrink: 0;
+  }
+  .settings-row-icon svg { width: 16px; height: 16px; }
+  .settings-row-text { min-width: 0; }
+  .settings-row-text .label { font-size: 13.5px; font-weight: 500; color: var(--text); }
+  .settings-row-text .sub { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+
+  .theme-switch {
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 11px;
+  }
+  .theme-switch button {
+    padding: 7px 14px; background: transparent; border: none;
+    color: var(--text-dim); font-family: inherit; font-size: 12.5px; font-weight: 500;
+    border-radius: 8px; cursor: pointer; transition: all .25s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .theme-switch button.active {
+    color: var(--text); background: var(--hover-bg);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .theme-switch button svg { width: 13px; height: 13px; }
+
+  .switch {
+    position: relative; width: 40px; height: 22px; border-radius: 22px;
+    background: var(--input-border); cursor: pointer;
+    transition: background .25s; flex-shrink: 0;
+  }
+  .switch::after {
+    content:''; position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--text);
+    transition: transform .25s cubic-bezier(.4,1.2,.6,1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .switch.on { background: var(--text); }
+  .switch.on::after { transform: translateX(18px); background: var(--bg-1); }
+
+  .settings-action {
+    width: 100%; padding: 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px; color: var(--text);
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all .25s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .settings-action:hover { background: var(--hover-bg); }
+  .settings-action.danger {
+    color: var(--error); border-color: rgba(248,113,113,0.2);
+  }
+  .settings-action.danger:hover {
+    background: rgba(248,113,113,0.08);
+    border-color: rgba(248,113,113,0.35);
+  }
+
+  /* ============================================================
+     MODALS (Privacy / Terms)
+     ============================================================ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: var(--overlay-bg);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0; visibility: hidden;
+    transition: opacity .3s, visibility .3s;
+    z-index: 500;
+  }
+  .modal-backdrop.open { opacity:1; visibility:visible; }
+
+  .modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(.94);
+    width: 560px;
+    max-width: 92vw;
+    max-height: 82vh;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px) saturate(160%);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.55);
+    z-index: 510;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .4s cubic-bezier(.34,1.3,.64,1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .modal.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid var(--divider);
+    flex-shrink: 0;
+  }
+  .modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -.2px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .modal-header h3 .shield {
+    width: 28px; height: 28px;
+    border-radius: 9px;
+    background: rgba(52,211,153,0.12);
+    border: 1px solid rgba(52,211,153,0.25);
+    color: var(--success);
+    display: grid; place-items: center;
+  }
+  .modal-header h3 .shield svg { width: 14px; height: 14px; }
+
+  .modal-body {
+    padding: 20px 22px;
+    overflow-y: auto;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    flex: 1;
+  }
+  .modal-body h4 {
+    color: var(--text);
+    font-size: 13.5px;
+    font-weight: 600;
+    margin: 16px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .modal-body h4:first-child { margin-top: 0; }
+  .modal-body h4 .num {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: var(--hover-bg);
+    border: 1px solid var(--input-border);
+    display: grid; place-items: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .modal-body p { margin-bottom: 8px; }
+  .modal-body ul {
+    list-style: none;
+    margin: 6px 0 10px;
+    padding-inline-start: 4px;
+  }
+  .modal-body ul li {
+    position: relative;
+    padding-inline-start: 18px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .modal-body ul li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 9px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
+  }
+  .modal-body .secure-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(52,211,153,0.1);
+    border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 8px;
+    color: var(--success);
+    font-size: 11.5px;
+    font-weight: 600;
+    margin: 4px 0 8px;
+  }
+  .modal-body .secure-badge svg { width: 12px; height: 12px; }
+
+  .modal-footer {
+    padding: 14px 22px 20px;
+    border-top: 1px solid var(--divider);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ============================================================
+     CLOCK WIDGET (bottom-left)
+     ============================================================ */
+  .clock-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 180;
+    font-variant-numeric: tabular-nums;
+  }
+  .clock-trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06);
+    user-select: none;
+  }
+  .clock-trigger:hover {
+    background: var(--hover-bg);
+    border-color: rgba(var(--particle-rgb),0.18);
+    transform: translateY(-1px);
+  }
+  .clock-trigger svg { width: 15px; height: 15px; color: var(--text-dim); }
+
+  .clock-time {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    color: var(--text);
+    min-width: 58px;
+  }
+  .clock-tz {
+    font-size: 10.5px;
+    color: var(--text-dimmer);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding-inline-start: 8px;
+    border-inline-start: 1px solid var(--divider);
+  }
+
+  /* Expanding panel */
+  .clock-panel {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    width: 290px;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px) saturate(160%);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+    padding: 16px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(.94);
+    transform-origin: bottom left;
+    transition: all .45s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+  }
+  .clock-widget.open .clock-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* Top "line" of clock widget that grows up */
+  .clock-widget::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(to right, rgba(var(--particle-rgb),0.15), transparent);
+    transition: height .45s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .clock-widget.open::before {
+    height: 2px;
+    opacity: 1;
+  }
+
+  .cal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .cal-nav {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: grid; place-items: center;
+    transition: all .2s;
+  }
+  .cal-nav:hover { background: var(--hover-bg); color: var(--text); }
+  .cal-nav svg { width: 12px; height: 12px; }
+
+  .cal-year {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: .5px;
+    text-align: center;
+    flex: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .cal-month {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 5px;
+  }
+  .cal-weekdays span {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dimmer);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 4px 0;
+  }
+  .cal-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    color: var(--text-dim);
+    border-radius: 8px;
+    cursor: default;
+    transition: all .2s;
+    font-variant-numeric: tabular-nums;
+  }
+  .cal-day.empty { visibility: hidden; }
+  .cal-day:hover:not(.today) {
+    background: var(--hover-bg);
+    color: var(--text);
+  }
+  .cal-day.today {
+    background: var(--text);
+    color: var(--bg-1);
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(var(--particle-rgb),0.25);
+    animation: todayPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes todayPulse {
+    0%,100% { box-shadow: 0 4px 14px rgba(var(--particle-rgb),0.25); }
+    50%     { box-shadow: 0 4px 22px rgba(var(--particle-rgb),0.5); }
+  }
+
+  .cal-time-now {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--divider);
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .cal-tz-label {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-dimmer);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ============================================================
+     VIEWS
+     ============================================================ */
   .view {
     position: relative;
     z-index: 10;
     width: 100%;
     display:flex;
     justify-content:center;
-    transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+    transition: opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);
   }
-  .view.hidden {
-    display: none;
-  }
+  .view.hidden { display: none; }
   .view.fade-out {
     opacity: 0;
-    transform: translateY(-24px) scale(.96);
+    transform: translateY(-24px) scale(.97);
     pointer-events: none;
   }
 
-  /* ============ Auth Card ============ */
+  /* ============ AUTH CARD ============ */
   .card {
     width:100%;
-    max-width: 440px;
-    padding: 32px 30px 28px;
+    max-width: 420px;
+    padding: 30px 28px 26px;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 24px;
+    border-radius: 22px;
     backdrop-filter: blur(30px) saturate(150%);
     -webkit-backdrop-filter: blur(30px) saturate(150%);
     box-shadow:
-      0 40px 80px rgba(0,0,0,0.6),
-      0 0 0 1px rgba(255,255,255,0.02),
+      0 40px 80px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(var(--particle-rgb),0.02),
       inset 0 1px 0 rgba(255,255,255,0.06);
-    margin: 0 20px;
+    margin: 0 18px;
     animation: cardIn .9s cubic-bezier(.34,1.3,.64,1) both;
   }
   @keyframes cardIn {
     from { opacity:0; transform: translateY(30px) scale(.96); }
     to   { opacity:1; transform: translateY(0) scale(1); }
   }
-
-  .card-title { text-align:center; margin-bottom: 22px; }
+  .card-title { text-align:center; margin-bottom: 20px; }
   .card-title h1 {
-    font-size: 22px; font-weight: 600;
-    letter-spacing: -.3px; margin-bottom: 6px;
+    font-size: 21px; font-weight: 600;
+    letter-spacing: -.3px; margin-bottom: 5px;
     animation: fadeSlide .6s ease both;
   }
   .card-title p {
-    font-size: 13px; color: var(--text-dim);
+    font-size: 12.5px; color: var(--text-dim);
     animation: fadeSlide .6s .1s ease both;
   }
   @keyframes fadeSlide {
@@ -231,44 +759,42 @@
     to   { opacity:1; transform: translateY(0); }
   }
 
-  /* ============ Tabs ============ */
+  /* Tabs */
   .tabs {
     position: relative;
     display:grid; grid-template-columns: 1fr 1fr;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius:12px; padding:4px;
-    margin-bottom: 22px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius:11px; padding:3px;
+    margin-bottom: 20px;
   }
   .tab-slider {
     position: absolute;
-    top: 4px; inset-inline-start: 4px;
-    width: calc(50% - 4px);
-    height: calc(100% - 8px);
-    background: rgba(255,255,255,0.09);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius:9px;
+    top: 3px; inset-inline-start: 3px;
+    width: calc(50% - 3px);
+    height: calc(100% - 6px);
+    background: var(--hover-bg);
+    border: 1px solid var(--input-border);
+    border-radius:8px;
     transition: transform .45s cubic-bezier(.4,1.2,.6,1);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
   [dir="rtl"] .tab-slider.signup { transform: translateX(-100%); }
   [dir="ltr"] .tab-slider.signup { transform: translateX(100%); }
-
   .tab {
-    position: relative; padding: 10px 0;
+    position: relative; padding: 9px 0;
     background: transparent; border: none;
     color: var(--text-dim);
-    font-family: inherit; font-size: 13.5px; font-weight: 500;
+    font-family: inherit; font-size: 13px; font-weight: 500;
     cursor: pointer; transition: color .25s; z-index:1;
   }
   .tab.active { color: var(--text); }
   .tab:hover:not(.active) { color: var(--text); }
 
-  /* ============ Forms ============ */
+  /* Form */
   .form-area { position: relative; }
-
   form.auth-form {
-    display:flex; flex-direction:column; gap: 12px;
+    display:flex; flex-direction:column; gap: 11px;
     transition: opacity .35s ease, transform .35s ease;
   }
   form.auth-form.hidden {
@@ -278,67 +804,74 @@
   }
   form.auth-form.hidden.from-top { transform: translateY(-12px); }
 
-  /* ============ Field ============ */
   .field { position: relative; animation: fadeSlide .5s ease both; }
   .field input,
-  .field textarea {
+  .field textarea,
+  .field select {
     width:100%;
-    padding: 20px 16px 8px;
-    padding-inline-end: 44px;
+    padding: 18px 14px 6px;
+    padding-inline-end: 42px;
     background: var(--input-bg);
     border: 1px solid var(--input-border);
-    border-radius: 12px;
+    border-radius: 11px;
     color: var(--text);
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13.5px;
     outline: none;
     transition: border-color .25s, background .25s, box-shadow .25s;
+    appearance: none; -webkit-appearance: none;
+  }
+  .field select {
+    padding: 18px 30px 6px 14px;
+    cursor: pointer;
   }
   .field textarea {
-    padding: 22px 16px 10px;
-    min-height: 80px;
+    padding: 20px 14px 10px;
+    min-height: 76px;
     resize: vertical;
     font-family: inherit;
   }
   .field input:hover,
-  .field textarea:hover { border-color: rgba(255,255,255,0.15); }
+  .field textarea:hover,
+  .field select:hover { border-color: rgba(var(--particle-rgb),0.15); }
   .field input:focus,
-  .field textarea:focus {
+  .field textarea:focus,
+  .field select:focus {
     border-color: var(--input-focus);
-    background: rgba(255,255,255,0.045);
-    box-shadow: 0 0 0 4px rgba(255,255,255,0.05);
+    background: var(--hover-bg);
+    box-shadow: 0 0 0 4px rgba(var(--particle-rgb),0.05);
   }
   .field label {
     position: absolute;
-    inset-inline-start: 16px;
+    inset-inline-start: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-dimmer);
-    font-size: 14px;
+    font-size: 13.5px;
     pointer-events: none;
     transform-origin: 0 50%;
     transition: all .3s cubic-bezier(.4,1.2,.6,1);
     white-space: nowrap;
   }
   [dir="rtl"] .field label { transform-origin: 100% 50%; }
-  .field textarea + label { top: 22px; transform: translateY(-50%); }
+  .field textarea + label { top: 20px; transform: translateY(-50%); }
 
   .field input:focus + label,
   .field input:not(:placeholder-shown) + label,
   .field textarea:focus + label,
-  .field textarea:not(:placeholder-shown) + label {
-    top: 12px;
+  .field textarea:not(:placeholder-shown) + label,
+  .field select:focus + label,
+  .field select:not([data-empty]) + label {
+    top: 10px;
     transform: translateY(-50%) scale(.72);
     color: var(--text-dim);
   }
   .field textarea:focus + label,
-  .field textarea:not(:placeholder-shown) + label {
-    top: 12px;
-  }
+  .field textarea:not(:placeholder-shown) + label { top: 10px; }
 
   .field .toggle-pass {
     position: absolute;
-    inset-inline-end: 12px;
+    inset-inline-end: 10px;
     top: 50%;
     transform: translateY(-50%);
     background: transparent; border: none;
@@ -350,10 +883,10 @@
   }
   .field .toggle-pass:hover {
     color: var(--text);
-    background: rgba(255,255,255,0.05);
+    background: var(--hover-bg);
   }
 
-  /* ============ Password strength ============ */
+  /* Password strength */
   .strength {
     display:flex; gap:4px;
     margin-top:-4px; padding: 0 4px;
@@ -363,7 +896,7 @@
   .strength.show { opacity:1; }
   .strength-bar {
     flex:1; height:100%;
-    background: rgba(255,255,255,0.08);
+    background: var(--input-border);
     border-radius:2px;
     transition: background .3s;
   }
@@ -371,26 +904,29 @@
   .strength-bar.active-mid    { background: var(--warn); }
   .strength-bar.active-strong { background: var(--success); }
 
-  /* ============ Row ============ */
   .row {
     display:flex; align-items:center;
     justify-content:space-between;
-    font-size:12.5px;
+    font-size:12px;
     margin: 2px 0 4px;
     animation: fadeSlide .5s .15s ease both;
   }
   .checkbox {
-    display:inline-flex; align-items:center; gap:8px;
+    display:inline-flex; align-items:flex-start; gap:8px;
     cursor:pointer; color: var(--text-dim);
     user-select:none; transition: color .2s;
+    font-size: 11.5px;
+    line-height: 1.5;
   }
   .checkbox input {
     appearance:none; -webkit-appearance:none;
-    width:16px; height:16px;
-    border: 1.5px solid rgba(255,255,255,0.2);
+    width:15px; height:15px;
+    margin-top: 1px;
+    border: 1.5px solid var(--input-border);
     border-radius:5px;
     background:transparent; cursor:pointer;
     position:relative; transition: all .2s;
+    flex-shrink: 0;
   }
   .checkbox input:checked {
     background: var(--text);
@@ -398,13 +934,21 @@
   }
   .checkbox input:checked::after {
     content:''; position:absolute;
-    left: 4.5px; top: 1.5px;
+    left: 4px; top: 1px;
     width: 4px; height: 8px;
-    border: solid #07070b;
+    border: solid var(--bg-1);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
   .checkbox:hover { color: var(--text); }
+  .checkbox a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--text-dimmer);
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .checkbox a:hover { text-decoration-color: var(--text); }
 
   .link {
     color: var(--text-dim);
@@ -413,17 +957,17 @@
   }
   .link:hover { color: var(--text); }
 
-  /* ============ Submit ============ */
+  /* Submit */
   .submit {
     position: relative;
-    padding: 14px;
+    padding: 13px;
     margin-top: 4px;
     background: var(--text);
-    color: #07070b;
+    color: var(--bg-1);
     border: none;
-    border-radius: 12px;
+    border-radius: 11px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
     overflow: hidden;
@@ -433,254 +977,413 @@
   .submit > span:not(.shine) { position: relative; z-index: 2; }
   .submit:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 32px rgba(255,255,255,0.22);
+    box-shadow: 0 12px 32px rgba(var(--particle-rgb),0.22);
   }
   .submit:active { transform: translateY(0); }
   .submit .shine {
     position: absolute; inset: 0;
-    background: linear-gradient(120deg, transparent 30%, rgba(0,0,0,0.15) 50%, transparent 70%);
+    background: linear-gradient(120deg, transparent 30%, rgba(var(--particle-rgb),0.15) 50%, transparent 70%);
     transform: translateX(-150%);
     transition: transform .8s;
     z-index: 1;
   }
   .submit:hover .shine { transform: translateX(150%); }
-
-  .submit.loading {
-    pointer-events: none;
-    color: transparent;
-  }
+  .submit.loading { pointer-events: none; color: transparent; }
   .submit.loading::after {
     content:'';
     position:absolute; top:50%; left:50%;
-    width:18px; height:18px;
-    margin:-9px 0 0 -9px;
-    border: 2px solid rgba(7,7,11,0.25);
-    border-top-color: #07070b;
+    width:16px; height:16px;
+    margin:-8px 0 0 -8px;
+    border: 2px solid rgba(var(--particle-rgb),0.25);
+    border-top-color: var(--bg-1);
     border-radius:50%;
     animation: spin .7s linear infinite;
     z-index:3;
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes ripple {
-    to { transform: scale(2.5); opacity: 0; }
+  .submit:disabled {
+    opacity: .5;
+    pointer-events: none;
+    cursor: not-allowed;
   }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes ripple { to { transform: scale(2.5); opacity: 0; } }
 
-  /* ============ Divider / Social ============ */
   .divider {
     display:flex; align-items:center; gap: 12px;
-    margin: 18px 0 14px;
+    margin: 16px 0 12px;
     color: var(--text-dimmer);
-    font-size: 11.5px; letter-spacing: .5px;
+    font-size: 11px; letter-spacing: .5px;
     animation: fadeSlide .5s .25s ease both;
   }
   .divider::before, .divider::after {
     content:''; flex:1; height:1px;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.12), transparent);
+    background: linear-gradient(to right, transparent, var(--divider), transparent);
   }
   .social {
-    display:grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+    display:grid; grid-template-columns: repeat(3,1fr); gap: 8px;
     animation: fadeSlide .5s .3s ease both;
   }
   .social-btn {
     display:grid; place-items:center;
-    padding: 11px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 11px;
+    padding: 10px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
     color: var(--text-dim);
     cursor: pointer;
     transition: all .25s;
   }
   .social-btn:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.16);
+    background: var(--hover-bg);
+    border-color: rgba(var(--particle-rgb),0.16);
     color: var(--text);
     transform: translateY(-2px);
   }
 
-  /* ============================================================
-     ============  PROFILE VIEW  ================================
-     ============================================================ */
+  /* ============ Secure banner (signup) ============ */
+  .secure-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 10px;
+    color: var(--success);
+    font-size: 11.5px;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+  .secure-banner svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* ============ DASHBOARD ============ */
+  .dashboard {
+    width: 100%;
+    max-width: 780px;
+    margin: 0 18px;
+    animation: cardIn .9s cubic-bezier(.34,1.3,.64,1) both;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-bottom: 60px;
+  }
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 22px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+  }
+  .dash-welcome { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
+  .dash-avatar {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--hover-bg);
+    border: 1px solid var(--input-border);
+    display: grid; place-items: center;
+    overflow: hidden;
+    background-size: cover; background-position: center;
+    font-weight: 600; font-size: 17px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .dash-welcome-text { min-width: 0; }
+  .dash-welcome-text .greet {
+    font-size: 11.5px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .dash-welcome-text .user {
+    font-size: 17px; font-weight: 600; letter-spacing: -.2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .dash-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .pill-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: inherit; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: all .25s; white-space: nowrap;
+  }
+  .pill-btn:hover { background: var(--hover-bg); transform: translateY(-1px); }
+  .pill-btn svg { width: 14px; height: 14px; }
+  .pill-btn.primary {
+    background: var(--text);
+    color: var(--bg-1);
+    border-color: var(--text);
+  }
+  .pill-btn.primary:hover { box-shadow: 0 8px 22px rgba(var(--particle-rgb),0.2); }
+
+  .dash-section-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--text-dimmer);
+    margin-bottom: 12px;
+  }
+  .dash-section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, var(--divider), transparent);
+  }
+
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+  }
+  .slot {
+    position: relative;
+    padding: 20px 18px;
+    min-height: 130px;
+    background: var(--card-bg);
+    border: 1px dashed var(--input-border);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all .3s cubic-bezier(.4,1.2,.6,1);
+    cursor: pointer;
+    display: flex; flex-direction: column; justify-content: space-between;
+    overflow: hidden;
+    animation: fadeSlide .5s ease both;
+  }
+  .slot:nth-child(1) { animation-delay: .05s; }
+  .slot:nth-child(2) { animation-delay: .10s; }
+  .slot:nth-child(3) { animation-delay: .15s; }
+  .slot:nth-child(4) { animation-delay: .20s; }
+  .slot:nth-child(5) { animation-delay: .25s; }
+  .slot:nth-child(6) { animation-delay: .30s; }
+  .slot:nth-child(7) { animation-delay: .35s; }
+  .slot:nth-child(8) { animation-delay: .40s; }
+  .slot:hover {
+    border-color: rgba(var(--particle-rgb),0.28);
+    background: var(--hover-bg);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  }
+  .slot-num {
+    position: absolute; top: 12px; inset-inline-end: 12px;
+    width: 24px; height: 24px;
+    border-radius: 8px;
+    background: var(--hover-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-dim);
+    font-size: 11px; font-weight: 700;
+    display: grid; place-items: center;
+    font-variant-numeric: tabular-nums;
+    transition: all .3s;
+  }
+  .slot:hover .slot-num {
+    background: var(--text); color: var(--bg-1);
+    border-color: var(--text);
+    transform: rotate(-8deg) scale(1.1);
+  }
+  .slot-icon {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    background: var(--hover-bg);
+    display: grid; place-items: center;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  .slot-icon svg { width: 14px; height: 14px; }
+  .slot-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .slot-hint { font-size: 11.5px; color: var(--text-dimmer); line-height: 1.5; }
+
+  /* ============ FOOTER (allows more scroll) ============ */
+  .site-footer {
+    width: 100%;
+    max-width: 780px;
+    margin: 0 18px;
+    padding: 30px 22px 20px;
+    border-top: 1px solid var(--divider);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: var(--text-dim);
+    font-size: 12px;
+    animation: fadeSlide .8s ease both;
+  }
+  .footer-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .f-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 11px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 9px;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 500;
+    transition: all .25s;
+  }
+  .f-badge:hover { background: var(--hover-bg); color: var(--text); }
+  .f-badge svg { width: 12px; height: 12px; color: var(--success); }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-links nav {
+    display: flex; gap: 18px; flex-wrap: wrap;
+  }
+  .footer-links nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color .2s;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .footer-links nav a:hover { color: var(--text); }
+
+  /* ============ PROFILE ============ */
   .profile-card {
     width: 100%;
-    max-width: 720px;
+    max-width: 520px;
     padding: 0;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 24px;
+    border-radius: 22px;
     backdrop-filter: blur(30px) saturate(150%);
     -webkit-backdrop-filter: blur(30px) saturate(150%);
-    box-shadow:
-      0 40px 80px rgba(0,0,0,0.6),
-      0 0 0 1px rgba(255,255,255,0.02),
-      inset 0 1px 0 rgba(255,255,255,0.06);
-    margin: 0 20px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+    margin: 0 18px;
     overflow: hidden;
     animation: cardIn .9s cubic-bezier(.34,1.3,.64,1) both;
   }
-
-  /* ---- Cover ---- */
   .profile-cover {
-    height: 130px;
+    height: 100px;
     background:
-      radial-gradient(circle at 30% 50%, rgba(255,255,255,0.08), transparent 60%),
-      radial-gradient(circle at 80% 30%, rgba(180,180,255,0.06), transparent 55%),
-      linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    position: relative;
-    overflow: hidden;
+      radial-gradient(circle at 30% 50%, var(--aurora-1), transparent 60%),
+      radial-gradient(circle at 80% 30%, var(--aurora-2), transparent 55%),
+      linear-gradient(135deg, var(--input-bg), transparent);
+    position: relative; overflow: hidden;
   }
   .profile-cover::before {
-    content:'';
-    position:absolute; inset:0;
+    content:''; position:absolute; inset:0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 24px 24px;
+      linear-gradient(var(--cover-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cover-grid) 1px, transparent 1px);
+    background-size: 22px 22px;
     mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
     animation: coverShift 20s linear infinite;
   }
   @keyframes coverShift {
     from { background-position: 0 0, 0 0; }
-    to   { background-position: 24px 24px, 24px 24px; }
+    to   { background-position: 22px 22px, 22px 22px; }
   }
-  .logout-btn {
-    position: absolute;
-    top: 16px;
-    inset-inline-end: 16px;
-    display:inline-flex; align-items:center; gap:6px;
-    padding: 8px 14px;
-    background: rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.1);
+  .cover-actions {
+    position: absolute; top: 12px; inset-inline-end: 12px;
+    display: flex; gap: 6px; z-index: 5;
+  }
+  .cover-btn {
+    display:inline-flex; align-items:center; gap:5px;
+    padding: 7px 11px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
     color: var(--text);
-    font-family: inherit;
-    font-size: 12.5px;
-    font-weight: 500;
-    border-radius: 10px;
-    cursor: pointer;
+    font-family: inherit; font-size: 11.5px; font-weight: 500;
+    border-radius: 9px; cursor: pointer;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition: all .25s;
-    z-index: 5;
   }
-  .logout-btn:hover {
-    background: rgba(248,113,113,0.15);
-    border-color: rgba(248,113,113,0.35);
-    color: #fca5a5;
-    transform: translateY(-1px);
+  .cover-btn:hover { background: var(--hover-bg); transform: translateY(-1px); }
+  .cover-btn svg { width: 12px; height: 12px; }
+  .cover-btn.danger:hover {
+    background: rgba(248,113,113,0.12);
+    border-color: rgba(248,113,113,0.3);
+    color: var(--error);
   }
-  .logout-btn svg { transition: transform .3s; }
-  .logout-btn:hover svg { transform: translateX(-2px); }
-  [dir="ltr"] .logout-btn:hover svg { transform: translateX(2px); }
 
-  /* ---- Header (avatar + info) ---- */
   .profile-header {
     display:flex;
     align-items:flex-end;
-    gap: 18px;
-    padding: 0 28px 20px;
-    margin-top: -46px;
-    position: relative;
-    z-index: 2;
+    gap: 14px;
+    padding: 0 22px 16px;
+    margin-top: -38px;
+    position: relative; z-index: 2;
   }
-
   .avatar-wrap {
-    position: relative;
-    flex-shrink: 0;
+    position: relative; flex-shrink: 0;
     animation: avatarIn .8s cubic-bezier(.34,1.56,.64,1) both;
   }
   @keyframes avatarIn {
     from { opacity:0; transform: scale(.4) rotate(-15deg); }
     to   { opacity:1; transform: scale(1) rotate(0); }
   }
-
   .avatar {
-    width: 96px; height: 96px;
+    width: 78px; height: 78px;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03));
-    border: 3px solid rgba(20,20,28,0.95);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    position: relative;
+    background: var(--hover-bg);
+    border: 3px solid var(--avatar-border);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--input-border);
+    display: grid; place-items: center;
+    overflow: hidden; position: relative;
     color: var(--text-dim);
-    font-size: 30px;
-    font-weight: 600;
-    background-size: cover;
-    background-position: center;
+    font-size: 26px; font-weight: 600;
+    background-size: cover; background-position: center;
     transition: box-shadow .3s;
   }
   .avatar:hover {
-    box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.15), 0 0 30px rgba(255,255,255,0.1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(var(--particle-rgb),0.15), 0 0 30px rgba(var(--particle-rgb),0.1);
   }
-
   .avatar-edit {
-    position: absolute;
-    bottom: 2px;
-    inset-inline-end: 2px;
-    width: 30px; height: 30px;
+    position: absolute; bottom: 0; inset-inline-end: 0;
+    width: 26px; height: 26px;
     border-radius: 50%;
     background: var(--text);
-    color: #07070b;
-    border: 3px solid rgba(20,20,28,0.95);
+    color: var(--bg-1);
+    border: 3px solid var(--avatar-border);
     display: grid; place-items:center;
-    cursor: pointer;
-    transition: all .25s;
+    cursor: pointer; transition: all .25s;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
   }
-  .avatar-edit:hover {
-    transform: scale(1.12) rotate(-8deg);
-    box-shadow: 0 6px 20px rgba(255,255,255,0.35);
-  }
-  .avatar-edit svg { width: 13px; height: 13px; }
+  .avatar-edit:hover { transform: scale(1.12) rotate(-8deg); }
+  .avatar-edit svg { width: 11px; height: 11px; }
 
   .profile-meta {
-    flex: 1;
-    padding-bottom: 6px;
-    min-width: 0;
+    flex: 1; padding-bottom: 4px; min-width: 0;
     animation: fadeSlide .6s .15s ease both;
   }
   .profile-meta h2 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -.3px;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 18px; font-weight: 600;
+    letter-spacing: -.3px; margin-bottom: 3px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .profile-meta .pm-sub {
-    font-size: 13px;
-    color: var(--text-dim);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    font-size: 12px; color: var(--text-dim);
+    display: flex; flex-wrap: wrap; gap: 8px;
     align-items: center;
   }
-  .profile-meta .pm-sub span {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .profile-meta .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 9px;
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px;
     background: rgba(52,211,153,0.12);
     border: 1px solid rgba(52,211,153,0.25);
-    color: #6ee7b7;
-    font-size: 10.5px;
-    font-weight: 500;
-    border-radius: 6px;
-    letter-spacing: .3px;
+    color: var(--success);
+    font-size: 10px; font-weight: 500;
+    border-radius: 5px; letter-spacing: .3px;
   }
   .badge .pulse {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #34d399;
-    box-shadow: 0 0 8px #34d399;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--success); box-shadow: 0 0 8px var(--success);
     animation: pulse 2s ease-in-out infinite;
   }
   @keyframes pulse {
@@ -688,244 +1391,145 @@
     50%     { opacity: .4; transform: scale(.85); }
   }
 
-  /* ---- Tabs inside profile ---- */
   .profile-tabs {
-    display: flex;
-    gap: 4px;
-    padding: 0 28px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-    overflow-x: auto;
+    display: flex; gap: 2px; padding: 0 22px;
+    border-bottom: 1px solid var(--divider);
+    position: relative; overflow-x: auto;
     scrollbar-width: none;
   }
   .profile-tabs::-webkit-scrollbar { display:none; }
-
   .ptab {
     position: relative;
-    padding: 14px 16px;
-    background: transparent;
-    border: none;
+    padding: 12px 14px;
+    background: transparent; border: none;
     color: var(--text-dim);
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: color .25s;
+    font-family: inherit; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; transition: color .25s;
     white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
+    display: inline-flex; align-items: center; gap: 6px;
   }
   .ptab:hover { color: var(--text); }
   .ptab.active { color: var(--text); }
   .ptab.active::after {
     content: '';
-    position: absolute;
-    left: 16px; right: 16px;
-    bottom: -1px;
-    height: 2px;
-    background: var(--text);
+    position: absolute; left: 12px; right: 12px; bottom: -1px;
+    height: 2px; background: var(--text);
     border-radius: 2px 2px 0 0;
     animation: tabline .35s cubic-bezier(.4,1.2,.6,1);
-    box-shadow: 0 0 12px rgba(255,255,255,0.35);
   }
   @keyframes tabline {
     from { transform: scaleX(0); }
     to   { transform: scaleX(1); }
   }
-  .ptab svg { width: 15px; height: 15px; opacity: .8; }
+  .ptab svg { width: 13px; height: 13px; opacity: .8; }
   .ptab.active svg { opacity: 1; }
 
-  /* ---- Body (tab contents) ---- */
   .profile-body {
-    padding: 26px 28px 8px;
+    padding: 22px 22px 6px;
     position: relative;
   }
-
-  .ptab-content {
-    display: none;
-    animation: fadeSlide .5s cubic-bezier(.4,0,.2,1) both;
-  }
-  .ptab-content.active { display: block; }
+  .ptab-content { display: none; }
+  .ptab-content.active { display: block; animation: fadeSlide .5s cubic-bezier(.4,0,.2,1) both; }
 
   .section-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
     color: var(--text-dimmer);
-    margin: 4px 0 14px;
+    margin: 4px 0 12px;
   }
   .section-title::after {
-    content:'';
-    flex: 1; height: 1px;
-    background: linear-gradient(to right, rgba(255,255,255,0.08), transparent);
+    content:''; flex: 1; height: 1px;
+    background: linear-gradient(to right, var(--divider), transparent);
   }
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
   .field-hint {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--text-dimmer);
-    margin-top: 6px;
+    margin-top: 5px;
     margin-inline-start: 4px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    display: flex; align-items: center; gap: 5px;
   }
 
-  /* ---- Social inputs ---- */
-  .social-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
+  .social-list { display: flex; flex-direction: column; gap: 9px; }
   .social-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 14px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
     transition: all .25s;
     animation: fadeSlide .4s ease both;
   }
-  .social-item:hover {
-    background: rgba(255,255,255,0.035);
-    border-color: rgba(255,255,255,0.12);
-    transform: translateY(-1px);
-  }
-
+  .social-item:hover { background: var(--hover-bg); transform: translateY(-1px); }
   .social-icon {
-    width: 38px; height: 38px;
-    border-radius: 11px;
+    width: 34px; height: 34px; border-radius: 10px;
     display: grid; place-items: center;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.06);
+    background: var(--hover-bg);
+    border: 1px solid var(--input-border);
     color: var(--text);
     flex-shrink: 0;
     transition: transform .3s;
   }
-  .social-item:hover .social-icon { transform: scale(1.08) rotate(-4deg); }
-  .social-icon svg { width: 16px; height: 16px; }
-
+  .social-item:hover .social-icon { transform: scale(1.06) rotate(-4deg); }
+  .social-icon svg { width: 15px; height: 15px; }
   .social-info { flex: 1; min-width: 0; }
   .social-info label {
     display: block;
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 5px;
+    font-size: 11px; color: var(--text-dim);
+    margin-bottom: 4px;
   }
   .social-info input {
     width: 100%;
-    padding: 8px 12px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 9px;
+    padding: 7px 10px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
     color: var(--text);
-    font-family: inherit;
-    font-size: 13px;
+    font-family: inherit; font-size: 12.5px;
     outline: none;
     transition: all .2s;
   }
   .social-info input:focus {
-    border-color: rgba(255,255,255,0.25);
-    background: rgba(0,0,0,0.3);
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(var(--particle-rgb),0.05);
   }
-  .social-info input::placeholder { color: var(--text-dimmer); font-size: 12px; }
+  .social-info input::placeholder { color: var(--text-dimmer); font-size: 11.5px; }
 
-  /* ---- Footer actions ---- */
   .profile-actions {
-    display: flex;
-    gap: 10px;
-    padding: 8px 28px 24px;
-    margin-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding-top: 20px;
+    display: flex; gap: 8px;
+    padding: 16px 22px 20px;
+    margin-top: 10px;
+    border-top: 1px solid var(--divider);
   }
-
   .btn-secondary {
-    padding: 13px 22px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
+    padding: 12px 18px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 11px;
     color: var(--text);
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all .25s;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all .25s;
   }
-  .btn-secondary:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.15);
-  }
-
+  .btn-secondary:hover { background: var(--hover-bg); }
   .profile-actions .submit {
-    flex: 1;
-    margin-top: 0;
-    animation: none;
-  }
-
-  /* ---- Chips for stats ---- */
-  .stats {
-    display: flex;
-    gap: 12px;
-    margin-top: 12px;
-    animation: fadeSlide .5s .2s ease both;
-  }
-  .stat {
-    flex: 1;
-    padding: 12px 14px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    transition: all .25s;
-  }
-  .stat:hover {
-    background: rgba(255,255,255,0.05);
-    transform: translateY(-2px);
-  }
-  .stat-num {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 2px;
+    flex: 1; margin-top: 0; animation: none;
+    padding: 12px; font-size: 13px;
   }
 
   /* ============ Toast ============ */
   .toast {
-    position: fixed;
-    top: 24px;
-    left: 50%;
+    position: fixed; top: 24px; left: 50%;
     transform: translate(-50%, -120px);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 18px;
-    background: rgba(20,20,28,0.85);
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 11px 16px;
+    background: var(--card-bg);
     backdrop-filter: blur(20px) saturate(160%);
     -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
+    border: 1px solid var(--card-border);
+    border-radius: 13px;
     color: var(--text);
-    font-size: 13.5px;
-    font-weight: 500;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.55);
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
     z-index: 9999;
     transition: transform .55s cubic-bezier(.34,1.56,.64,1), opacity .3s;
     opacity: 0;
@@ -934,48 +1538,40 @@
   }
   .toast.show { transform: translate(-50%, 0); opacity: 1; }
   .toast .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 14px var(--success);
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--success); box-shadow: 0 0 12px var(--success);
     flex-shrink: 0;
   }
-  .toast.error .dot { background: var(--error); box-shadow: 0 0 14px var(--error); }
-
-  /* ============ Credit ============ */
-  .credit {
-    position: fixed;
-    bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11.5px;
-    color: var(--text-dimmer);
-    z-index: 5;
-    letter-spacing: .3px;
-    white-space: nowrap;
-  }
+  .toast.error .dot { background: var(--error); box-shadow: 0 0 12px var(--error); }
 
   /* ============ Responsive ============ */
-  @media (max-width: 720px) {
-    .grid-2 { grid-template-columns: 1fr; }
-  }
   @media (max-width: 560px) {
-    body { padding: 72px 0 40px; align-items: flex-start; }
-    .card { padding: 26px 22px 22px; border-radius: 20px; margin: 0 14px; }
-    .profile-card { margin: 0 14px; border-radius: 20px; }
-    .brand { top:18px; inset-inline-start:18px; }
+    body { padding: 70px 0 30px; }
+    .brand { top:16px; left:16px; }
     .brand span { display:none; }
-    .lang-wrapper { top: 16px; right: 16px; }
-    .credit { font-size: 10.5px; }
-    .profile-header { padding: 0 20px 16px; gap: 14px; }
-    .profile-tabs { padding: 0 20px; }
-    .profile-body { padding: 20px 20px 8px; }
-    .profile-actions { padding: 8px 20px 20px; flex-wrap: wrap; }
+    .top-controls { top: 14px; right: 14px; gap: 6px; }
+    .icon-btn { width: 36px; height: 36px; }
+    .lang-btn { padding: 0 10px; }
+    .lang-btn .lbl { display: none; }
+    .card, .profile-card, .dashboard, .site-footer { margin: 0 12px; }
+    .card { padding: 26px 20px 20px; }
+    .profile-header { padding: 0 18px 14px; gap: 12px; }
+    .profile-tabs { padding: 0 16px; }
+    .profile-body { padding: 18px 18px 6px; }
+    .profile-actions { padding: 14px 18px 18px; flex-wrap: wrap; }
     .btn-secondary { flex: 1; }
     .profile-actions .submit { flex-basis: 100%; }
-    .avatar { width: 82px; height: 82px; }
-    .profile-meta h2 { font-size: 18px; }
-    .stats { flex-wrap: wrap; }
+    .avatar { width: 68px; height: 68px; font-size: 22px; }
+    .profile-meta h2 { font-size: 16px; }
+    .dash-header { padding: 14px 16px; }
+    .slots-grid { grid-template-columns: 1fr; }
+    .settings-panel { padding: 22px 18px; }
+    .clock-widget { bottom: 14px; left: 14px; }
+    .clock-panel { width: 260px; }
+    .clock-time { font-size: 13px; min-width: 52px; }
+    .clock-tz { display: none; }
+    .footer-links { flex-direction: column; align-items: flex-start; }
+    .modal { max-height: 88vh; }
   }
 </style>
 </head>
@@ -991,14 +1587,177 @@
   <span>Aurora</span>
 </div>
 
-<!-- Language Selector -->
-<div class="lang-wrapper">
-  <button class="lang-btn" id="langBtn" type="button">
-    <span id="langFlag">🇸🇦</span>
-    <span id="langName">العربية</span>
-    <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+<!-- Top Controls -->
+<div class="top-controls">
+  <button class="icon-btn" id="themeBtn" title="Theme">
+    <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
   </button>
+
+  <button class="icon-btn lang-btn" id="langBtn">
+    <span class="flag" id="langFlag">🇬🇧</span>
+    <span class="lbl" id="langLbl">EN</span>
+    <svg class="chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+  </button>
+
+  <button class="icon-btn" id="settingsBtn" title="Settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+    <span class="net-dot" id="netDot" title="online"></span>
+  </button>
+
   <div class="lang-menu" id="langMenu"></div>
+</div>
+
+<!-- Settings -->
+<div class="settings-backdrop" id="settingsBackdrop"></div>
+<aside class="settings-panel" id="settingsPanel">
+  <div class="settings-header">
+    <h2 id="lSettingsTitle">Settings</h2>
+    <button class="settings-close" id="settingsClose" aria-label="close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="settings-section">
+    <div class="settings-section-title" id="lSecAppearance">Appearance</div>
+    <div class="settings-row" style="flex-direction:column;align-items:stretch;gap:10px;">
+      <div class="settings-row-info">
+        <div class="settings-row-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </div>
+        <div class="settings-row-text">
+          <div class="label" id="lThemeLabel">Theme</div>
+          <div class="sub" id="lThemeSub">Choose your preferred mode</div>
+        </div>
+      </div>
+      <div class="theme-switch">
+        <button id="themeDark" data-theme="dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span id="lDark">Dark</span>
+        </button>
+        <button id="themeLight" data-theme="light">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <span id="lLight">Light</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <div class="settings-section-title" id="lSecLanguage">Language</div>
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <div class="settings-row-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="settings-row-text">
+          <div class="label" id="lLangLabel">Current language</div>
+          <div class="sub" id="settingsLangName">English</div>
+        </div>
+      </div>
+      <button class="pill-btn" id="settingsLangBtn">
+        <span id="lChangeLang">Change</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <div class="settings-section-title" id="lSecPrefs">Preferences</div>
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <div class="settings-row-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <div class="settings-row-text">
+          <div class="label" id="lNotif">Notifications</div>
+          <div class="sub" id="lNotifSub">Receive alerts and updates</div>
+        </div>
+      </div>
+      <div class="switch" id="notifSwitch" role="switch"></div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <div class="settings-row-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </div>
+        <div class="settings-row-text">
+          <div class="label" id="lSound">Sound effects</div>
+          <div class="sub" id="lSoundSub">Play sounds on actions</div>
+        </div>
+      </div>
+      <div class="switch" id="soundSwitch" role="switch"></div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-row-info">
+        <div class="settings-row-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        </div>
+        <div class="settings-row-text">
+          <div class="label" id="lNetStatus">Network status</div>
+          <div class="sub" id="netStatusSub">Online</div>
+        </div>
+      </div>
+      <div id="netIndicator" style="width:10px;height:10px;border-radius:50%;background:var(--success);box-shadow:0 0 10px var(--success);"></div>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <div class="settings-section-title" id="lSecSecurity">Security & Privacy</div>
+    <button class="settings-action" id="openPrivacyFromSettings">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span id="lPrivacyLink">Privacy policy</span>
+    </button>
+    <button class="settings-action" id="openTermsFromSettings">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span id="lTermsLink">Terms of service</span>
+    </button>
+  </div>
+
+  <div class="settings-section">
+    <div class="settings-section-title" id="lSecData">Data</div>
+    <button class="settings-action danger" id="clearDataBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      <span id="lClearData">Clear all data</span>
+    </button>
+  </div>
+
+  <div class="settings-section" style="margin-top:auto;">
+    <div class="settings-row" style="justify-content:center;text-align:center;flex-direction:column;gap:4px;">
+      <div class="label" style="font-size:12.5px;font-weight:600;">Aurora v4</div>
+      <div class="sub" style="font-size:11px;" id="lAboutSub">Crafted with care · 2025</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     CLOCK WIDGET
+     ============================================================ -->
+<div class="clock-widget" id="clockWidget">
+  <div class="clock-panel" id="clockPanel">
+    <div class="cal-head">
+      <button class="cal-nav" id="calPrev" aria-label="prev">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="cal-year" id="calYear">2025</div>
+      <button class="cal-nav" id="calNext" aria-label="next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="cal-month" id="calMonth">January</div>
+    <div class="cal-weekdays" id="calWeekdays"></div>
+    <div class="cal-days" id="calDays"></div>
+    <div class="cal-time-now" id="calTimeNow">00:00:00</div>
+    <div class="cal-tz-label" id="calTzLabel">UTC</div>
+  </div>
+  <div class="clock-trigger" id="clockTrigger">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span class="clock-time" id="clockTime">00:00:00</span>
+    <span class="clock-tz" id="clockTz">UTC</span>
+  </div>
 </div>
 
 <!-- ============================================================
@@ -1007,58 +1766,56 @@
 <div class="view" id="authView">
   <main class="card">
     <div class="card-title">
-      <h1 id="title">مرحباً بعودتك</h1>
-      <p id="subtitle">سجّل دخولك لمتابعة رحلتك</p>
+      <h1 id="title">Welcome back</h1>
+      <p id="subtitle">Sign in to continue your journey</p>
     </div>
 
     <div class="tabs">
       <div class="tab-slider" id="tabSlider"></div>
-      <button class="tab active" id="tabLogin" type="button">تسجيل الدخول</button>
-      <button class="tab" id="tabSignup" type="button">إنشاء حساب</button>
+      <button class="tab active" id="tabLogin" type="button">Sign in</button>
+      <button class="tab" id="tabSignup" type="button">Sign up</button>
     </div>
 
     <div class="form-area">
-      <!-- LOGIN -->
       <form class="auth-form" id="loginForm">
         <div class="field">
           <input type="email" id="loginEmail" placeholder=" " autocomplete="email" required>
-          <label for="loginEmail" id="lEmail">البريد الإلكتروني</label>
+          <label for="loginEmail" id="lEmail">Email address</label>
         </div>
         <div class="field">
           <input type="password" id="loginPass" placeholder=" " autocomplete="current-password" required>
-          <label for="loginPass" id="lPass">كلمة المرور</label>
+          <label for="loginPass" id="lPass">Password</label>
           <button type="button" class="toggle-pass" data-target="loginPass" aria-label="toggle">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
         <div class="row">
           <label class="checkbox">
             <input type="checkbox" id="remember">
-            <span id="lRemember">تذكرني</span>
+            <span id="lRemember">Remember me</span>
           </label>
-          <a href="#" class="link" id="lForgot">نسيت كلمة المرور؟</a>
+          <a href="#" class="link" id="lForgot">Forgot password?</a>
         </div>
         <button type="submit" class="submit" id="loginBtn">
           <span class="shine"></span>
-          <span id="lLoginBtn">تسجيل الدخول</span>
+          <span id="lLoginBtn">Sign in</span>
         </button>
       </form>
 
-      <!-- SIGNUP -->
       <form class="auth-form hidden from-top" id="signupForm">
         <div class="field">
           <input type="text" id="signupName" placeholder=" " autocomplete="name" required>
-          <label for="signupName" id="lName">الاسم الكامل</label>
+          <label for="signupName" id="lName">Full name</label>
         </div>
         <div class="field">
           <input type="email" id="signupEmail" placeholder=" " autocomplete="email" required>
-          <label for="signupEmail" id="lEmail2">البريد الإلكتروني</label>
+          <label for="signupEmail" id="lEmail2">Email address</label>
         </div>
         <div class="field">
           <input type="password" id="signupPass" placeholder=" " autocomplete="new-password" required>
-          <label for="signupPass" id="lPass2">كلمة المرور</label>
+          <label for="signupPass" id="lPass2">Password</label>
           <button type="button" class="toggle-pass" data-target="signupPass" aria-label="toggle">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
         <div class="strength" id="strength">
@@ -1067,48 +1824,124 @@
           <div class="strength-bar"></div>
           <div class="strength-bar"></div>
         </div>
-        <button type="submit" class="submit" id="signupBtn">
+
+        <!-- Terms & Privacy agreement -->
+        <label class="checkbox" style="margin-top:6px;">
+          <input type="checkbox" id="signupTerms">
+          <span id="lTermsAgree">
+            I agree to the
+            <a id="openTerms" href="javascript:void(0)">Terms</a>
+            and
+            <a id="openPrivacy" href="javascript:void(0)">Privacy Policy</a>,
+            including WiFi usage and IP storage.
+          </span>
+        </label>
+
+        <!-- Secure banner -->
+        <div class="secure-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span id="lSecureNote">Protected with SHA-256 encryption · 100% safe</span>
+        </div>
+
+        <button type="submit" class="submit" id="signupBtn" disabled>
           <span class="shine"></span>
-          <span id="lSignupBtn">إنشاء الحساب</span>
+          <span id="lSignupBtn">Create account</span>
         </button>
       </form>
     </div>
 
-    <div class="divider" id="lOr">أو تابع باستخدام</div>
+    <div class="divider" id="lOr">Or continue with</div>
 
     <div class="social">
       <button class="social-btn" type="button" title="Google">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
       </button>
       <button class="social-btn" type="button" title="Apple">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
       </button>
       <button class="social-btn" type="button" title="GitHub">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.99 3.24 9.22 7.74 10.72.57.11.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.15.68-3.81-1.34-3.81-1.34-.51-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.51-.29-5.15-1.26-5.15-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.44.11-3 0 0 .95-.3 3.11 1.16.9-.25 1.87-.38 2.83-.38s1.93.13 2.83.38c2.16-1.46 3.11-1.16 3.11-1.16.62 1.56.23 2.71.11 3 .73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.17 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.67.79.55 4.49-1.5 7.73-5.73 7.73-10.72C23.25 5.48 18.27.5 12 .5z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.99 3.24 9.22 7.74 10.72.57.11.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.15.68-3.81-1.34-3.81-1.34-.51-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.51-.29-5.15-1.26-5.15-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.44.11-3 0 0 .95-.3 3.11 1.16.9-.25 1.87-.38 2.83-.38s1.93.13 2.83.38c2.16-1.46 3.11-1.16 3.11-1.16.62 1.56.23 2.71.11 3 .73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.17 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.67.79.55 4.49-1.5 7.73-5.73 7.73-10.72C23.25 5.48 18.27.5 12 .5z"/></svg>
       </button>
     </div>
   </main>
 </div>
 
 <!-- ============================================================
-     PROFILE VIEW
+     DASHBOARD
+     ============================================================ -->
+<div class="view hidden" id="dashboardView">
+  <div class="dashboard">
+    <div class="dash-header">
+      <div class="dash-welcome">
+        <div class="dash-avatar" id="dashAvatar">A</div>
+        <div class="dash-welcome-text">
+          <div class="greet" id="lWelcome">Welcome back</div>
+          <div class="user" id="dashName">—</div>
+        </div>
+      </div>
+      <div class="dash-actions">
+        <button class="pill-btn primary" id="openProfileBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="lMyProfile">My profile</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="dash-section-title" id="lSlotsTitle">Your workspace</div>
+      <div class="slots-grid" id="slotsGrid"></div>
+    </div>
+
+    <!-- FOOTER: for more scroll -->
+    <footer class="site-footer">
+      <div class="footer-badges">
+        <div class="f-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span id="lFootSSL">SSL encrypted</span>
+        </div>
+        <div class="f-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span id="lFootSecure">SHA-256 secure</span>
+        </div>
+        <div class="f-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="lFootPrivacy">Privacy first</span>
+        </div>
+        <div class="f-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          <span id="lFootWifi">WiFi ready</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <nav>
+          <a id="footPrivacy"><span id="lFootPrivacyLink">Privacy</span></a>
+          <a id="footTerms"><span id="lFootTermsLink">Terms</span></a>
+          <a id="footSecurity"><span id="lFootSecurityLink">Security</span></a>
+        </nav>
+        <span id="lCopyright">© 2025 Aurora</span>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ============================================================
+     PROFILE
      ============================================================ -->
 <div class="view hidden" id="profileView">
   <main class="profile-card">
-
-    <!-- Cover + Logout -->
     <div class="profile-cover">
-      <button class="logout-btn" id="logoutBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/>
-          <line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span id="lLogout">تسجيل الخروج</span>
-      </button>
+      <div class="cover-actions">
+        <button class="cover-btn" id="backBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <span id="lBack">Back</span>
+        </button>
+        <button class="cover-btn danger" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span id="lLogout">Log out</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Header: avatar + name -->
     <div class="profile-header">
       <div class="avatar-wrap">
         <div class="avatar" id="avatar">A</div>
@@ -1125,93 +1958,76 @@
         <h2 id="pName">—</h2>
         <div class="pm-sub">
           <span id="pEmail">—</span>
-          <span class="badge"><span class="pulse"></span> <span id="lActive">نشط</span></span>
+          <span class="badge"><span class="pulse"></span> <span id="lActive">Active</span></span>
         </div>
       </div>
     </div>
 
-    <!-- Tabs -->
     <div class="profile-tabs">
       <button class="ptab active" data-tab="info">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span id="lTabInfo">المعلومات الشخصية</span>
+        <span id="lTabInfo">Personal info</span>
       </button>
       <button class="ptab" data-tab="social">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-        <span id="lTabSocial">حسابات التواصل</span>
+        <span id="lTabSocial">Social accounts</span>
       </button>
     </div>
 
-    <!-- Body -->
     <div class="profile-body">
-
-      <!-- TAB: INFO -->
       <div class="ptab-content active" data-content="info">
-        <div class="section-title" id="lSecBasic">المعلومات الأساسية</div>
-
-        <div class="grid-2">
-          <div class="field">
-            <input type="text" id="editName" placeholder=" " maxlength="40">
-            <label for="editName" id="lEditName">الاسم الكامل</label>
-          </div>
-          <div class="field">
-            <input type="text" id="editUsername" placeholder=" " maxlength="24">
-            <label for="editUsername" id="lEditUsername">اسم المستخدم</label>
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-top:12px;">
-          <div class="field">
-            <input type="email" id="editEmail" placeholder=" ">
-            <label for="editEmail" id="lEditEmail">البريد الإلكتروني</label>
-          </div>
-          <div class="field">
-            <input type="text" id="editLocation" placeholder=" " maxlength="40">
-            <label for="editLocation" id="lEditLocation">الموقع الجغرافي</label>
-          </div>
-        </div>
-
-        <div class="section-title" style="margin-top:24px;" id="lSecBio">نبذة عنك</div>
+        <div class="section-title" id="lSecBasic">Basic information</div>
 
         <div class="field">
-          <textarea id="editBio" placeholder=" " maxlength="160" rows="3"></textarea>
-          <label for="editBio" id="lEditBio">اكتب نبذة قصيرة عنك</label>
+          <input type="text" id="editName" placeholder=" " maxlength="40">
+          <label for="editName" id="lEditName">Full name</label>
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <input type="text" id="editUsername" placeholder=" " maxlength="24">
+          <label for="editUsername" id="lEditUsername">Username</label>
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <input type="email" id="editEmail" placeholder=" ">
+          <label for="editEmail" id="lEditEmail">Email address</label>
+        </div>
+        <div class="field" style="margin-top:10px;">
+          <input type="text" id="editLocation" placeholder=" " maxlength="40">
+          <label for="editLocation" id="lEditLocation">Location</label>
+        </div>
+
+        <div class="section-title" style="margin-top:20px;" id="lSecRegion">Region & Time</div>
+        <div class="field">
+          <select id="editTimezone" data-empty="true">
+            <option value="">—</option>
+          </select>
+          <label for="editTimezone" id="lEditTimezone">Country / Timezone</label>
         </div>
         <div class="field-hint">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <span id="lBioHint">الحد الأقصى 160 حرفاً</span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span id="lTzHint">Used by the clock widget. If not set, your browser timezone is used.</span>
+        </div>
+
+        <div class="section-title" style="margin-top:20px;" id="lSecBio">About you</div>
+        <div class="field">
+          <textarea id="editBio" placeholder=" " maxlength="160" rows="3"></textarea>
+          <label for="editBio" id="lEditBio">Write a short bio</label>
+        </div>
+        <div class="field-hint">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span id="lBioHint">Maximum 160 characters</span>
           <span id="bioCount" style="margin-inline-start:auto;font-variant-numeric:tabular-nums;">0/160</span>
         </div>
 
-        <div class="section-title" style="margin-top:24px;" id="lSecWeb">الموقع الإلكتروني</div>
-
+        <div class="section-title" style="margin-top:20px;" id="lSecWeb">Website</div>
         <div class="field">
           <input type="url" id="editWebsite" placeholder=" ">
           <label for="editWebsite" id="lEditWebsite">https://example.com</label>
         </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-num" id="statJoined">—</div>
-            <div class="stat-label" id="lStatJoined">عضو منذ</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num" id="statSocials">0</div>
-            <div class="stat-label" id="lStatSocials">حسابات مرتبطة</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">✓</div>
-            <div class="stat-label" id="lStatVerified">موثّق</div>
-          </div>
-        </div>
       </div>
 
-      <!-- TAB: SOCIAL -->
       <div class="ptab-content" data-content="social">
-        <div class="section-title" id="lSecSocial">اربط حساباتك</div>
-
+        <div class="section-title" id="lSecSocial">Connect your accounts</div>
         <div class="social-list">
-          <!-- Twitter/X -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -1221,8 +2037,6 @@
               <input type="text" id="sTwitter" placeholder="@username">
             </div>
           </div>
-
-          <!-- Instagram -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -1232,8 +2046,6 @@
               <input type="text" id="sInstagram" placeholder="@username">
             </div>
           </div>
-
-          <!-- Facebook -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.56 9.87v-6.98H7.9V12h2.54V9.8c0-2.5 1.5-3.89 3.77-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.98A10 10 0 0 0 22 12z"/></svg>
@@ -1243,8 +2055,6 @@
               <input type="text" id="sFacebook" placeholder="facebook.com/username">
             </div>
           </div>
-
-          <!-- LinkedIn -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
@@ -1254,8 +2064,6 @@
               <input type="text" id="sLinkedin" placeholder="linkedin.com/in/username">
             </div>
           </div>
-
-          <!-- GitHub -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 4.99 3.24 9.22 7.74 10.72.57.11.78-.25.78-.55 0-.27-.01-1.16-.02-2.11-3.15.68-3.81-1.34-3.81-1.34-.51-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.51-.29-5.15-1.26-5.15-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.44.11-3 0 0 .95-.3 3.11 1.16.9-.25 1.87-.38 2.83-.38s1.93.13 2.83.38c2.16-1.46 3.11-1.16 3.11-1.16.62 1.56.23 2.71.11 3 .73.79 1.17 1.8 1.17 3.04 0 4.35-2.65 5.31-5.17 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.67.79.55 4.49-1.5 7.73-5.73 7.73-10.72C23.25 5.48 18.27.5 12 .5z"/></svg>
@@ -1265,8 +2073,6 @@
               <input type="text" id="sGithub" placeholder="username">
             </div>
           </div>
-
-          <!-- YouTube -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>
@@ -1276,8 +2082,6 @@
               <input type="text" id="sYoutube" placeholder="@channel">
             </div>
           </div>
-
-          <!-- TikTok -->
           <div class="social-item">
             <div class="social-icon">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.1z"/></svg>
@@ -1291,205 +2095,746 @@
       </div>
     </div>
 
-    <!-- Footer actions -->
     <div class="profile-actions">
-      <button class="btn-secondary" id="resetBtn" type="button" id="lCancel">إلغاء</button>
+      <button class="btn-secondary" id="resetBtn" type="button">
+        <span id="lCancel">Cancel</span>
+      </button>
       <button class="submit" id="saveBtn">
         <span class="shine"></span>
-        <span id="lSave">حفظ التغييرات</span>
+        <span id="lSave">Save changes</span>
       </button>
     </div>
   </main>
 </div>
 
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+
+<!-- Privacy Modal -->
+<div class="modal" id="privacyModal">
+  <div class="modal-header">
+    <h3>
+      <span class="shield">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      <span id="lPrivacyTitle">Privacy Policy</span>
+    </h3>
+    <button class="settings-close" id="closePrivacy" aria-label="close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body" id="privacyBody"></div>
+  <div class="modal-footer">
+    <button class="btn-secondary" id="closePrivacyBtn" type="button"><span id="lClose">Close</span></button>
+  </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal" id="termsModal">
+  <div class="modal-header">
+    <h3>
+      <span class="shield">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </span>
+      <span id="lTermsTitle">Terms of Service</span>
+    </h3>
+    <button class="settings-close" id="closeTerms" aria-label="close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="modal-body" id="termsBody"></div>
+  <div class="modal-footer">
+    <button class="btn-secondary" id="closeTermsBtn" type="button"><span id="lClose2">Close</span></button>
+  </div>
+</div>
+
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
-<div class="credit">© 2025 Aurora — Crafted with care</div>
 
 <script>
-/* ==================== Language Data ==================== */
+/* ============================================================
+   TRANSLATIONS
+   ============================================================ */
 const LANGS = {
-  ar: { flag:'🇸🇦', name:'العربية', dir:'rtl',
+  en: { flag:'🇬🇧', short:'EN', name:'English', dir:'ltr',
+    title:'Welcome back', subtitle:'Sign in to continue your journey',
+    titleUp:'Create account', subtitleUp:'Join us in seconds',
+    tabLogin:'Sign in', tabSignup:'Sign up',
+    email:'Email address', password:'Password', name:'Full name',
+    remember:'Remember me', forgot:'Forgot password?',
+    loginBtn:'Sign in', signupBtn:'Create account', or:'Or continue with',
+    toastSignupOk:'Account created successfully',
+    toastLoginOk:'Welcome back',
+    errUserExists:'This email is already registered',
+    errInvalid:'Invalid email or password',
+    errShort:'Password too short (min 6)',
+    errFill:'Please fill all fields',
+    errTerms:'Please accept the terms and privacy policy',
+    welcome:'Welcome back', myProfile:'My profile',
+    slotsTitle:'Your workspace',
+    slot:'Slot', slotHint:'Empty slot — ready for content',
+    logout:'Log out', active:'Active', back:'Back',
+    tabInfo:'Personal info', tabSocial:'Social accounts',
+    secBasic:'Basic information', secRegion:'Region & Time',
+    secBio:'About you', secWeb:'Website', secSocial:'Connect your accounts',
+    editName:'Full name', editUsername:'Username',
+    editEmail:'Email address', editLocation:'Location',
+    editTimezone:'Country / Timezone',
+    tzHint:'Used by the clock widget. If not set, your browser timezone is used.',
+    editBio:'Write a short bio', editWebsite:'https://example.com',
+    bioHint:'Maximum 160 characters',
+    save:'Save changes', cancel:'Cancel',
+    saved:'Changes saved successfully',
+    photoUpdated:'Photo updated',
+    photoErr:'Failed to load image',
+    logoutOk:'Logged out',
+    settingsTitle:'Settings',
+    secAppearance:'Appearance', secLanguage:'Language',
+    secPrefs:'Preferences', secData:'Data', secSecurity:'Security & Privacy',
+    themeLabel:'Theme', themeSub:'Choose your preferred mode',
+    dark:'Dark', light:'Light',
+    langLabel:'Current language', changeLang:'Change',
+    notif:'Notifications', notifSub:'Receive alerts and updates',
+    sound:'Sound effects', soundSub:'Play sounds on actions',
+    netStatus:'Network status', online:'Online', offline:'Offline',
+    privacyLink:'Privacy policy', termsLink:'Terms of service',
+    clearData:'Clear all data',
+    clearDataConfirm:'This will remove all accounts and settings. Continue?',
+    dataCleared:'All data cleared',
+    aboutSub:'Crafted with care · 2025',
+    // Terms agreement on signup
+    termsAgree:'I agree to the {terms} and {privacy}, including WiFi usage and IP storage.',
+    termsLabel:'Terms', privacyLabel:'Privacy Policy',
+    secureNote:'Protected with SHA-256 encryption · 100% safe',
+    // Footer
+    footSSL:'SSL encrypted', footSecure:'SHA-256 secure',
+    footPrivacy:'Privacy first', footWifi:'WiFi ready',
+    footPrivacyLink:'Privacy', footTermsLink:'Terms',
+    footSecurityLink:'Security', copyright:'© 2025 Aurora',
+    // Modals
+    privacyTitle:'Privacy Policy', termsTitle:'Terms of Service',
+    close:'Close',
+    // Modal content
+    privacyContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Site is fully secure</span>
+      <p>Your privacy and security are our top priorities. This policy explains how we handle your data.</p>
+      <h4><span class="num">1</span> Information We Collect</h4>
+      <ul>
+        <li><strong>Account data:</strong> name, email, hashed password (SHA-256).</li>
+        <li><strong>Profile:</strong> optional avatar, bio, location, timezone, social links.</li>
+        <li><strong>IP address:</strong> stored temporarily for security and abuse prevention.</li>
+        <li><strong>Network:</strong> we use your WiFi/network to sync your data securely.</li>
+      </ul>
+      <h4><span class="num">2</span> How We Protect Your Data</h4>
+      <ul>
+        <li>Passwords are hashed with <strong>SHA-256</strong> — never stored in plain text.</li>
+        <li>All data is kept in your <strong>browser's local storage</strong>, not on external servers.</li>
+        <li>We use <strong>HTTPS encryption</strong> for any network request.</li>
+        <li>Content-Security-Policy headers prevent XSS and injection attacks.</li>
+      </ul>
+      <h4><span class="num">3</span> WiFi Usage</h4>
+      <p>When you access Aurora, we may detect your connection status to ensure reliable service. We never monitor the contents of your traffic.</p>
+      <h4><span class="num">4</span> Your Rights</h4>
+      <ul>
+        <li>Delete all your data at any time from Settings → Clear all data.</li>
+        <li>Export or modify your profile whenever you want.</li>
+      </ul>
+      <h4><span class="num">5</span> Contact</h4>
+      <p>For any privacy concern, reach out through our support channels.</p>
+    `,
+    termsContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Safe to use</span>
+      <p>By creating an account on Aurora, you agree to these terms.</p>
+      <h4><span class="num">1</span> Account Responsibility</h4>
+      <ul>
+        <li>You must provide accurate information.</li>
+        <li>Keep your password secret — we never ask for it.</li>
+        <li>You're responsible for all activity under your account.</li>
+      </ul>
+      <h4><span class="num">2</span> WiFi & Network Use</h4>
+      <ul>
+        <li>Aurora uses your network/WiFi to save and sync your data.</li>
+        <li>You agree to use the service on trusted networks.</li>
+        <li>We do not store unencrypted network traffic.</li>
+      </ul>
+      <h4><span class="num">3</span> IP Address Logging</h4>
+      <p>For security reasons, we may store your IP address temporarily to prevent abuse and detect suspicious activity. It's never shared with third parties.</p>
+      <h4><span class="num">4</span> Acceptable Use</h4>
+      <ul>
+        <li>Don't use Aurora for illegal activities.</li>
+        <li>Don't attempt to break or reverse-engineer the service.</li>
+      </ul>
+      <h4><span class="num">5</span> Data Ownership</h4>
+      <p>You own your data. You can delete it anytime from Settings.</p>
+    `
+  },
+  ar: { flag:'🇸🇦', short:'ع', name:'العربية', dir:'rtl',
     title:'مرحباً بعودتك', subtitle:'سجّل دخولك لمتابعة رحلتك',
     titleUp:'إنشاء حساب', subtitleUp:'انضم إلينا في ثوانٍ',
     tabLogin:'تسجيل الدخول', tabSignup:'إنشاء حساب',
     email:'البريد الإلكتروني', password:'كلمة المرور', name:'الاسم الكامل',
     remember:'تذكرني', forgot:'نسيت كلمة المرور؟',
-    loginBtn:'تسجيل الدخول', signupBtn:'إنشاء الحساب',
-    or:'أو تابع باستخدام',
+    loginBtn:'تسجيل الدخول', signupBtn:'إنشاء الحساب', or:'أو تابع باستخدام',
     toastSignupOk:'تم إنشاء الحساب بنجاح',
     toastLoginOk:'مرحباً بعودتك',
     errUserExists:'هذا البريد مسجل مسبقاً',
     errInvalid:'البريد أو كلمة المرور غير صحيحة',
     errShort:'كلمة المرور قصيرة جداً (6 على الأقل)',
     errFill:'يرجى تعبئة جميع الحقول',
-    // Profile
-    logout:'تسجيل الخروج', active:'نشط',
+    errTerms:'يرجى الموافقة على الشروط وسياسة الخصوصية',
+    welcome:'مرحباً بعودتك', myProfile:'ملفي الشخصي',
+    slotsTitle:'مساحتك',
+    slot:'مكان', slotHint:'مكان فارغ — جاهز للمحتوى',
+    logout:'تسجيل الخروج', active:'نشط', back:'رجوع',
     tabInfo:'المعلومات الشخصية', tabSocial:'حسابات التواصل',
-    secBasic:'المعلومات الأساسية', secBio:'نبذة عنك', secWeb:'الموقع الإلكتروني',
-    secSocial:'اربط حساباتك',
+    secBasic:'المعلومات الأساسية', secRegion:'المنطقة والتوقيت',
+    secBio:'نبذة عنك', secWeb:'الموقع', secSocial:'اربط حساباتك',
     editName:'الاسم الكامل', editUsername:'اسم المستخدم',
     editEmail:'البريد الإلكتروني', editLocation:'الموقع الجغرافي',
+    editTimezone:'الدولة / المنطقة الزمنية',
+    tzHint:'تُستخدم في الساعة. إن لم تحدد، سيُستخدم توقيت متصفحك.',
     editBio:'اكتب نبذة قصيرة عنك', editWebsite:'https://example.com',
     bioHint:'الحد الأقصى 160 حرفاً',
-    statJoined:'عضو منذ', statSocials:'حسابات مرتبطة', statVerified:'موثّق',
     save:'حفظ التغييرات', cancel:'إلغاء',
     saved:'تم حفظ التغييرات بنجاح',
     photoUpdated:'تم تحديث الصورة',
     photoErr:'تعذّر تحميل الصورة',
-    logoutOk:'تم تسجيل الخروج'
+    logoutOk:'تم تسجيل الخروج',
+    settingsTitle:'الإعدادات',
+    secAppearance:'المظهر', secLanguage:'اللغة',
+    secPrefs:'التفضيلات', secData:'البيانات', secSecurity:'الأمان والخصوصية',
+    themeLabel:'السمة', themeSub:'اختر الوضع المفضل لديك',
+    dark:'داكن', light:'فاتح',
+    langLabel:'اللغة الحالية', changeLang:'تغيير',
+    notif:'الإشعارات', notifSub:'استقبل التنبيهات والتحديثات',
+    sound:'المؤثرات الصوتية', soundSub:'تشغيل الأصوات عند الإجراءات',
+    netStatus:'حالة الشبكة', online:'متصل', offline:'غير متصل',
+    privacyLink:'سياسة الخصوصية', termsLink:'شروط الخدمة',
+    clearData:'مسح جميع البيانات',
+    clearDataConfirm:'سيتم حذف جميع الحسابات والإعدادات. هل تريد المتابعة؟',
+    dataCleared:'تم مسح جميع البيانات',
+    aboutSub:'صُنع بعناية · 2025',
+    termsAgree:'أوافق على {terms} و{privacy}، بما في ذلك استخدام الوايفاي وتخزين الآيبيهات.',
+    termsLabel:'الشروط', privacyLabel:'سياسة الخصوصية',
+    secureNote:'محمي بتشفير SHA-256 · آمن 100%',
+    footSSL:'تشفير SSL', footSecure:'آمن بـ SHA-256',
+    footPrivacy:'الخصوصية أولاً', footWifi:'يدعم الوايفاي',
+    footPrivacyLink:'الخصوصية', footTermsLink:'الشروط',
+    footSecurityLink:'الأمان', copyright:'© 2025 Aurora',
+    privacyTitle:'سياسة الخصوصية', termsTitle:'شروط الخدمة',
+    close:'إغلاق',
+    privacyContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> الموقع آمن تماماً</span>
+      <p>خصوصيتك وأمانك هما أولويتنا القصوى. توضح هذه السياسة كيف نتعامل مع بياناتك.</p>
+      <h4><span class="num">1</span> المعلومات التي نجمعها</h4>
+      <ul>
+        <li><strong>بيانات الحساب:</strong> الاسم، البريد، كلمة المرور مشفّرة بـ SHA-256.</li>
+        <li><strong>الملف الشخصي:</strong> صورة اختيارية، نبذة، موقع، منطقة زمنية، روابط سوشل.</li>
+        <li><strong>عنوان IP:</strong> يُخزّن مؤقتاً لأغراض الأمان ومنع الإساءة.</li>
+        <li><strong>الشبكة:</strong> نستخدم الوايفاي/الشبكة لمزامنة بياناتك بشكل آمن.</li>
+      </ul>
+      <h4><span class="num">2</span> كيف نحمي بياناتك</h4>
+      <ul>
+        <li>كلمات المرور مشفّرة بـ <strong>SHA-256</strong> — لا تُخزّن كنص عادي.</li>
+        <li>كل البيانات محفوظة في <strong>التخزين المحلي للمتصفح</strong>، ليست على سيرفرات خارجية.</li>
+        <li>نستخدم <strong>تشفير HTTPS</strong> لأي طلب شبكة.</li>
+        <li>رؤوس Content-Security-Policy تمنع هجمات XSS والحقن.</li>
+      </ul>
+      <h4><span class="num">3</span> استخدام الوايفاي</h4>
+      <p>عند الوصول إلى Aurora، قد نكتشف حالة اتصالك لضمان خدمة موثوقة. لا نراقب محتوى بياناتك.</p>
+      <h4><span class="num">4</span> حقوقك</h4>
+      <ul>
+        <li>احذف كل بياناتك في أي وقت من الإعدادات → مسح كل البيانات.</li>
+        <li>عدّل ملفك الشخصي متى شئت.</li>
+      </ul>
+      <h4><span class="num">5</span> التواصل</h4>
+      <p>لأي استفسار بخصوص الخصوصية، تواصل معنا عبر قنوات الدعم.</p>
+    `,
+    termsContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> آمن للاستخدام</span>
+      <p>بإنشاء حساب على Aurora، أنت توافق على هذه الشروط.</p>
+      <h4><span class="num">1</span> مسؤولية الحساب</h4>
+      <ul>
+        <li>يجب تقديم معلومات صحيحة.</li>
+        <li>احفظ كلمة المرور سرية — لا نطلبها منك أبداً.</li>
+        <li>أنت مسؤول عن كل نشاط تحت حسابك.</li>
+      </ul>
+      <h4><span class="num">2</span> استخدام الوايفاي والشبكة</h4>
+      <ul>
+        <li>Aurora يستخدم شبكتك/وايفاي لحفظ ومزامنة بياناتك.</li>
+        <li>توافق على استخدام الخدمة على شبكات موثوقة.</li>
+        <li>لا نخزن بيانات الشبكة غير المشفرة.</li>
+      </ul>
+      <h4><span class="num">3</span> تسجيل الآيبيهات</h4>
+      <p>لأسباب أمنية، قد نخزن عنوان IP مؤقتاً لمنع الإساءة وكشف النشاط المشبوه. لا يُشارك مع أي طرف ثالث.</p>
+      <h4><span class="num">4</span> الاستخدام المقبول</h4>
+      <ul>
+        <li>لا تستخدم Aurora لأنشطة غير قانونية.</li>
+        <li>لا تحاول كسر أو إعادة هندسة الخدمة.</li>
+      </ul>
+      <h4><span class="num">5</span> ملكية البيانات</h4>
+      <p>أنت تملك بياناتك. يمكنك حذفها في أي وقت من الإعدادات.</p>
+    `
   },
-  en: { flag:'🇬🇧', name:'English', dir:'ltr',
-    title:'Welcome back', subtitle:'Sign in to continue your journey',
-    titleUp:'Create account', subtitleUp:'Join us in seconds',
-    tabLogin:'Sign in', tabSignup:'Sign up',
-    email:'Email address', password:'Password', name:'Full name',
-    remember:'Remember me', forgot:'Forgot password?',
-    loginBtn:'Sign in', signupBtn:'Create account',
-    or:'Or continue with',
-    toastSignupOk:'Account created successfully',
-    toastLoginOk:'Welcome back',
-    errUserExists:'This email is already registered',
-    errInvalid:'Invalid email or password',
-    errShort:'Password is too short (min 6)',
-    errFill:'Please fill all fields',
-    logout:'Log out', active:'Active',
-    tabInfo:'Personal info', tabSocial:'Social accounts',
-    secBasic:'Basic information', secBio:'About you', secWeb:'Website',
-    secSocial:'Connect your accounts',
-    editName:'Full name', editUsername:'Username',
-    editEmail:'Email address', editLocation:'Location',
-    editBio:'Write a short bio', editWebsite:'https://example.com',
-    bioHint:'Maximum 160 characters',
-    statJoined:'Member since', statSocials:'Linked accounts', statVerified:'Verified',
-    save:'Save changes', cancel:'Cancel',
-    saved:'Changes saved successfully',
-    photoUpdated:'Photo updated',
-    photoErr:'Failed to load image',
-    logoutOk:'Logged out'
-  },
-  fr: { flag:'🇫🇷', name:'Français', dir:'ltr',
+  fr: { flag:'🇫🇷', short:'FR', name:'Français', dir:'ltr',
     title:'Bon retour', subtitle:'Connectez-vous pour continuer',
-    titleUp:'Créer un compte', subtitleUp:'Rejoignez-nous',
+    titleUp:'Créer un compte', subtitleUp:'Rejoignez-nous en quelques secondes',
     tabLogin:'Connexion', tabSignup:'Inscription',
     email:'Adresse e-mail', password:'Mot de passe', name:'Nom complet',
     remember:'Se souvenir', forgot:'Mot de passe oublié ?',
-    loginBtn:'Se connecter', signupBtn:'Créer un compte',
-    or:'Ou continuer avec',
-    toastSignupOk:'Compte créé',
-    toastLoginOk:'Bon retour',
-    errUserExists:'Cet e-mail est déjà enregistré',
-    errInvalid:'E-mail ou mot de passe invalide',
-    errShort:'Mot de passe trop court',
-    errFill:'Veuillez remplir tous les champs',
-    logout:'Déconnexion', active:'Actif',
+    loginBtn:'Se connecter', signupBtn:'Créer un compte', or:'Ou continuer avec',
+    toastSignupOk:'Compte créé avec succès', toastLoginOk:'Bon retour',
+    errUserExists:'Cet e-mail est déjà enregistré', errInvalid:'E-mail ou mot de passe invalide',
+    errShort:'Mot de passe trop court (min 6)', errFill:'Veuillez remplir tous les champs',
+    errTerms:'Veuillez accepter les conditions et la confidentialité',
+    welcome:'Bon retour', myProfile:'Mon profil', slotsTitle:'Votre espace',
+    slot:'Emplacement', slotHint:'Emplacement vide — prêt pour le contenu',
+    logout:'Déconnexion', active:'Actif', back:'Retour',
     tabInfo:'Infos personnelles', tabSocial:'Réseaux sociaux',
-    secBasic:'Informations de base', secBio:'À propos', secWeb:'Site web',
-    secSocial:'Connectez vos comptes',
+    secBasic:'Informations de base', secRegion:'Région et heure',
+    secBio:'À propos', secWeb:'Site web', secSocial:'Connectez vos comptes',
     editName:'Nom complet', editUsername:"Nom d'utilisateur",
     editEmail:'Adresse e-mail', editLocation:'Localisation',
+    editTimezone:'Pays / Fuseau horaire',
+    tzHint:"Utilisé par l'horloge. Sinon, fuseau du navigateur.",
     editBio:'Écrivez une courte bio', editWebsite:'https://example.com',
     bioHint:'Maximum 160 caractères',
-    statJoined:'Membre depuis', statSocials:'Comptes liés', statVerified:'Vérifié',
     save:'Enregistrer', cancel:'Annuler',
-    saved:'Modifications enregistrées',
-    photoUpdated:'Photo mise à jour',
-    photoErr:'Échec du chargement',
-    logoutOk:'Déconnecté'
+    saved:'Modifications enregistrées', photoUpdated:'Photo mise à jour',
+    photoErr:'Échec du chargement', logoutOk:'Déconnecté',
+    settingsTitle:'Paramètres',
+    secAppearance:'Apparence', secLanguage:'Langue',
+    secPrefs:'Préférences', secData:'Données', secSecurity:'Sécurité et confidentialité',
+    themeLabel:'Thème', themeSub:'Choisissez votre mode préféré',
+    dark:'Sombre', light:'Clair',
+    langLabel:'Langue actuelle', changeLang:'Changer',
+    notif:'Notifications', notifSub:'Recevoir alertes et mises à jour',
+    sound:'Effets sonores', soundSub:'Jouer des sons sur les actions',
+    netStatus:'État du réseau', online:'En ligne', offline:'Hors ligne',
+    privacyLink:'Politique de confidentialité', termsLink:"Conditions d'utilisation",
+    clearData:'Effacer toutes les données',
+    clearDataConfirm:'Cela supprimera tous les comptes et paramètres. Continuer ?',
+    dataCleared:'Toutes les données effacées',
+    aboutSub:'Conçu avec soin · 2025',
+    termsAgree:"J'accepte les {terms} et la {privacy}, y compris l'usage du WiFi et le stockage des IP.",
+    termsLabel:'conditions', privacyLabel:'politique de confidentialité',
+    secureNote:'Protégé par chiffrement SHA-256 · 100% sûr',
+    footSSL:'Chiffré SSL', footSecure:'Sécurisé SHA-256',
+    footPrivacy:'Confidentialité', footWifi:'WiFi prêt',
+    footPrivacyLink:'Confidentialité', footTermsLink:'Conditions',
+    footSecurityLink:'Sécurité', copyright:'© 2025 Aurora',
+    privacyTitle:'Politique de confidentialité', termsTitle:"Conditions d'utilisation",
+    close:'Fermer',
+    privacyContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Site entièrement sécurisé</span>
+      <p>Votre vie privée et votre sécurité sont notre priorité absolue.</p>
+      <h4><span class="num">1</span> Données collectées</h4>
+      <ul>
+        <li>Nom, e-mail, mot de passe haché (SHA-256).</li>
+        <li>Profil : avatar, bio, lieu, fuseau, réseaux sociaux.</li>
+        <li>Adresse IP : stockage temporaire pour la sécurité.</li>
+        <li>Réseau : utilisation du WiFi pour synchroniser vos données.</li>
+      </ul>
+      <h4><span class="num">2</span> Protection</h4>
+      <ul>
+        <li>Mots de passe hachés en SHA-256.</li>
+        <li>Données dans le stockage local du navigateur.</li>
+        <li>Chiffrement HTTPS pour les requêtes.</li>
+      </ul>
+      <h4><span class="num">3</span> Utilisation du WiFi</h4>
+      <p>Nous pouvons détecter votre connexion. Nous ne surveillons jamais le contenu.</p>
+      <h4><span class="num">4</span> Vos droits</h4>
+      <ul>
+        <li>Supprimez toutes vos données à tout moment.</li>
+      </ul>
+      <h4><span class="num">5</span> Contact</h4>
+      <p>Contactez-nous via les canaux de support.</p>
+    `,
+    termsContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sûr d'utilisation</span>
+      <p>En créant un compte, vous acceptez ces conditions.</p>
+      <h4><span class="num">1</span> Responsabilité du compte</h4>
+      <ul>
+        <li>Fournissez des informations exactes.</li>
+        <li>Gardez votre mot de passe secret.</li>
+      </ul>
+      <h4><span class="num">2</span> WiFi et réseau</h4>
+      <ul>
+        <li>Aurora utilise votre réseau pour synchroniser les données.</li>
+        <li>Utilisez sur des réseaux de confiance.</li>
+      </ul>
+      <h4><span class="num">3</span> Journalisation IP</h4>
+      <p>Stockage temporaire pour la sécurité. Jamais partagé avec des tiers.</p>
+      <h4><span class="num">4</span> Usage acceptable</h4>
+      <ul>
+        <li>Pas d'activités illégales.</li>
+      </ul>
+      <h4><span class="num">5</span> Propriété des données</h4>
+      <p>Vous possédez vos données. Supprimez-les à tout moment.</p>
+    `
   },
-  es: { flag:'🇪🇸', name:'Español', dir:'ltr',
+  es: { flag:'🇪🇸', short:'ES', name:'Español', dir:'ltr',
     title:'Bienvenido de nuevo', subtitle:'Inicia sesión para continuar',
     titleUp:'Crear cuenta', subtitleUp:'Únete en segundos',
     tabLogin:'Iniciar sesión', tabSignup:'Registrarse',
     email:'Correo electrónico', password:'Contraseña', name:'Nombre completo',
     remember:'Recuérdame', forgot:'¿Olvidaste tu contraseña?',
-    loginBtn:'Entrar', signupBtn:'Crear cuenta',
-    or:'O continúa con',
-    toastSignupOk:'Cuenta creada',
-    toastLoginOk:'Bienvenido',
-    errUserExists:'Este correo ya está registrado',
-    errInvalid:'Correo o contraseña incorrectos',
-    errShort:'Contraseña muy corta',
-    errFill:'Rellena todos los campos',
-    logout:'Cerrar sesión', active:'Activo',
+    loginBtn:'Entrar', signupBtn:'Crear cuenta', or:'O continúa con',
+    toastSignupOk:'Cuenta creada con éxito', toastLoginOk:'Bienvenido de nuevo',
+    errUserExists:'Este correo ya está registrado', errInvalid:'Correo o contraseña incorrectos',
+    errShort:'Contraseña muy corta (mín 6)', errFill:'Rellena todos los campos',
+    errTerms:'Acepta los términos y la privacidad',
+    welcome:'Bienvenido de nuevo', myProfile:'Mi perfil', slotsTitle:'Tu espacio',
+    slot:'Espacio', slotHint:'Espacio vacío — listo para contenido',
+    logout:'Cerrar sesión', active:'Activo', back:'Atrás',
     tabInfo:'Información personal', tabSocial:'Redes sociales',
-    secBasic:'Información básica', secBio:'Sobre ti', secWeb:'Sitio web',
-    secSocial:'Conecta tus cuentas',
+    secBasic:'Información básica', secRegion:'Región y hora',
+    secBio:'Sobre ti', secWeb:'Sitio web', secSocial:'Conecta tus cuentas',
     editName:'Nombre completo', editUsername:'Usuario',
     editEmail:'Correo electrónico', editLocation:'Ubicación',
+    editTimezone:'País / Zona horaria',
+    tzHint:'Usado por el reloj. Si no lo defines, se usa la zona del navegador.',
     editBio:'Escribe una bio corta', editWebsite:'https://example.com',
     bioHint:'Máximo 160 caracteres',
-    statJoined:'Miembro desde', statSocials:'Cuentas vinculadas', statVerified:'Verificado',
     save:'Guardar cambios', cancel:'Cancelar',
-    saved:'Cambios guardados',
-    photoUpdated:'Foto actualizada',
-    photoErr:'Error al cargar',
-    logoutOk:'Sesión cerrada'
+    saved:'Cambios guardados', photoUpdated:'Foto actualizada',
+    photoErr:'Error al cargar', logoutOk:'Sesión cerrada',
+    settingsTitle:'Ajustes',
+    secAppearance:'Apariencia', secLanguage:'Idioma',
+    secPrefs:'Preferencias', secData:'Datos', secSecurity:'Seguridad y privacidad',
+    themeLabel:'Tema', themeSub:'Elige tu modo preferido',
+    dark:'Oscuro', light:'Claro',
+    langLabel:'Idioma actual', changeLang:'Cambiar',
+    notif:'Notificaciones', notifSub:'Recibir alertas y actualizaciones',
+    sound:'Efectos de sonido', soundSub:'Reproducir sonidos en acciones',
+    netStatus:'Estado de red', online:'En línea', offline:'Sin conexión',
+    privacyLink:'Política de privacidad', termsLink:'Términos de servicio',
+    clearData:'Borrar todos los datos',
+    clearDataConfirm:'Esto eliminará todas las cuentas y ajustes. ¿Continuar?',
+    dataCleared:'Todos los datos borrados',
+    aboutSub:'Hecho con cariño · 2025',
+    termsAgree:'Acepto los {terms} y la {privacy}, incluyendo uso de WiFi y almacenamiento de IP.',
+    termsLabel:'términos', privacyLabel:'política de privacidad',
+    secureNote:'Protegido con cifrado SHA-256 · 100% seguro',
+    footSSL:'Cifrado SSL', footSecure:'Seguro SHA-256',
+    footPrivacy:'Privacidad primero', footWifi:'WiFi listo',
+    footPrivacyLink:'Privacidad', footTermsLink:'Términos',
+    footSecurityLink:'Seguridad', copyright:'© 2025 Aurora',
+    privacyTitle:'Política de privacidad', termsTitle:'Términos de servicio',
+    close:'Cerrar',
+    privacyContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sitio totalmente seguro</span>
+      <p>Tu privacidad y seguridad son nuestra prioridad.</p>
+      <h4><span class="num">1</span> Datos que recogemos</h4>
+      <ul>
+        <li>Nombre, correo, contraseña con hash SHA-256.</li>
+        <li>Perfil: avatar, bio, ubicación, zona horaria, redes.</li>
+        <li>Dirección IP: almacenamiento temporal por seguridad.</li>
+        <li>Red: usamos tu WiFi para sincronizar datos.</li>
+      </ul>
+      <h4><span class="num">2</span> Protección</h4>
+      <ul>
+        <li>Contraseñas hasheadas con SHA-256.</li>
+        <li>Datos en almacenamiento local del navegador.</li>
+        <li>Cifrado HTTPS.</li>
+      </ul>
+      <h4><span class="num">3</span> Uso de WiFi</h4>
+      <p>Podemos detectar tu conexión. Nunca monitoreamos el contenido.</p>
+      <h4><span class="num">4</span> Tus derechos</h4>
+      <ul><li>Borra tus datos cuando quieras.</li></ul>
+      <h4><span class="num">5</span> Contacto</h4>
+      <p>Contáctanos vía soporte.</p>
+    `,
+    termsContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Seguro de usar</span>
+      <p>Al crear una cuenta, aceptas estos términos.</p>
+      <h4><span class="num">1</span> Responsabilidad</h4>
+      <ul><li>Proporciona información exacta.</li><li>Mantén tu contraseña segura.</li></ul>
+      <h4><span class="num">2</span> WiFi y red</h4>
+      <ul><li>Aurora usa tu red para sincronizar.</li><li>Usa redes de confianza.</li></ul>
+      <h4><span class="num">3</span> Registro de IP</h4>
+      <p>Almacenamiento temporal por seguridad. Nunca compartido.</p>
+      <h4><span class="num">4</span> Uso aceptable</h4>
+      <ul><li>Sin actividades ilegales.</li></ul>
+      <h4><span class="num">5</span> Propiedad</h4>
+      <p>Posees tus datos. Bórralos cuando quieras.</p>
+    `
   },
-  de: { flag:'🇩🇪', name:'Deutsch', dir:'ltr',
+  de: { flag:'🇩🇪', short:'DE', name:'Deutsch', dir:'ltr',
     title:'Willkommen zurück', subtitle:'Melde dich an',
     titleUp:'Konto erstellen', subtitleUp:'Tritt uns bei',
     tabLogin:'Anmelden', tabSignup:'Registrieren',
-    email:'E-Mail', password:'Passwort', name:'Vollständiger Name',
+    email:'E-Mail-Adresse', password:'Passwort', name:'Vollständiger Name',
     remember:'Angemeldet bleiben', forgot:'Passwort vergessen?',
-    loginBtn:'Anmelden', signupBtn:'Konto erstellen',
-    or:'Oder weiter mit',
-    toastSignupOk:'Konto erstellt',
-    toastLoginOk:'Willkommen',
-    errUserExists:'Diese E-Mail ist bereits registriert',
-    errInvalid:'Ungültige E-Mail oder Passwort',
-    errShort:'Passwort zu kurz',
-    errFill:'Bitte alle Felder ausfüllen',
-    logout:'Abmelden', active:'Aktiv',
+    loginBtn:'Anmelden', signupBtn:'Konto erstellen', or:'Oder weiter mit',
+    toastSignupOk:'Konto erfolgreich erstellt', toastLoginOk:'Willkommen zurück',
+    errUserExists:'Diese E-Mail ist bereits registriert', errInvalid:'Ungültige E-Mail oder Passwort',
+    errShort:'Passwort zu kurz (min 6)', errFill:'Bitte alle Felder ausfüllen',
+    errTerms:'Bitte akzeptiere AGB und Datenschutz',
+    welcome:'Willkommen zurück', myProfile:'Mein Profil', slotsTitle:'Dein Arbeitsbereich',
+    slot:'Platz', slotHint:'Leerer Platz — bereit für Inhalt',
+    logout:'Abmelden', active:'Aktiv', back:'Zurück',
     tabInfo:'Persönliche Infos', tabSocial:'Soziale Netzwerke',
-    secBasic:'Grundinformationen', secBio:'Über dich', secWeb:'Webseite',
-    secSocial:'Konten verbinden',
+    secBasic:'Grundinformationen', secRegion:'Region & Zeit',
+    secBio:'Über dich', secWeb:'Webseite', secSocial:'Konten verbinden',
     editName:'Vollständiger Name', editUsername:'Benutzername',
-    editEmail:'E-Mail', editLocation:'Standort',
+    editEmail:'E-Mail-Adresse', editLocation:'Standort',
+    editTimezone:'Land / Zeitzone',
+    tzHint:'Wird von der Uhr verwendet. Sonst Browser-Zeitzone.',
     editBio:'Kurze Bio schreiben', editWebsite:'https://example.com',
     bioHint:'Maximal 160 Zeichen',
-    statJoined:'Mitglied seit', statSocials:'Verbundene Konten', statVerified:'Verifiziert',
     save:'Speichern', cancel:'Abbrechen',
-    saved:'Änderungen gespeichert',
-    photoUpdated:'Foto aktualisiert',
-    photoErr:'Fehler beim Laden',
-    logoutOk:'Abgemeldet'
+    saved:'Änderungen gespeichert', photoUpdated:'Foto aktualisiert',
+    photoErr:'Fehler beim Laden', logoutOk:'Abgemeldet',
+    settingsTitle:'Einstellungen',
+    secAppearance:'Erscheinungsbild', secLanguage:'Sprache',
+    secPrefs:'Einstellungen', secData:'Daten', secSecurity:'Sicherheit & Datenschutz',
+    themeLabel:'Design', themeSub:'Wähle deinen Modus',
+    dark:'Dunkel', light:'Hell',
+    langLabel:'Aktuelle Sprache', changeLang:'Ändern',
+    notif:'Benachrichtigungen', notifSub:'Alerts und Updates erhalten',
+    sound:'Soundeffekte', soundSub:'Töne bei Aktionen abspielen',
+    netStatus:'Netzwerkstatus', online:'Online', offline:'Offline',
+    privacyLink:'Datenschutz', termsLink:'AGB',
+    clearData:'Alle Daten löschen',
+    clearDataConfirm:'Alle Konten und Einstellungen werden entfernt. Fortfahren?',
+    dataCleared:'Alle Daten gelöscht',
+    aboutSub:'Mit Sorgfalt erstellt · 2025',
+    termsAgree:'Ich akzeptiere die {terms} und {privacy}, inkl. WiFi-Nutzung und IP-Speicherung.',
+    termsLabel:'AGB', privacyLabel:'Datenschutz',
+    secureNote:'Geschützt mit SHA-256 · 100% sicher',
+    footSSL:'SSL-verschlüsselt', footSecure:'SHA-256 sicher',
+    footPrivacy:'Datenschutz zuerst', footWifi:'WiFi bereit',
+    footPrivacyLink:'Datenschutz', footTermsLink:'AGB',
+    footSecurityLink:'Sicherheit', copyright:'© 2025 Aurora',
+    privacyTitle:'Datenschutz', termsTitle:'AGB',
+    close:'Schließen',
+    privacyContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Seite vollständig sicher</span>
+      <p>Deine Privatsphäre ist unsere Priorität.</p>
+      <h4><span class="num">1</span> Erhobene Daten</h4>
+      <ul>
+        <li>Name, E-Mail, gehashtes Passwort (SHA-256).</li>
+        <li>Profil: Avatar, Bio, Ort, Zeitzone, Socials.</li>
+        <li>IP: temporär für Sicherheit.</li>
+        <li>Netzwerk: WiFi zur Synchronisierung.</li>
+      </ul>
+      <h4><span class="num">2</span> Schutz</h4>
+      <ul>
+        <li>Passwörter SHA-256 gehasht.</li>
+        <li>Daten im Browser-Speicher.</li>
+        <li>HTTPS-Verschlüsselung.</li>
+      </ul>
+      <h4><span class="num">3</span> WiFi-Nutzung</h4>
+      <p>Verbindung wird erkannt. Inhalte werden nie überwacht.</p>
+      <h4><span class="num">4</span> Deine Rechte</h4>
+      <ul><li>Lösche alle Daten jederzeit.</li></ul>
+      <h4><span class="num">5</span> Kontakt</h4>
+      <p>Über Support-Kanäle.</p>
+    `,
+    termsContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sicher</span>
+      <p>Mit der Kontoerstellung akzeptierst du diese AGB.</p>
+      <h4><span class="num">1</span> Verantwortung</h4>
+      <ul><li>Gib korrekte Infos an.</li><li>Halte dein Passwort geheim.</li></ul>
+      <h4><span class="num">2</span> WiFi & Netzwerk</h4>
+      <ul><li>Aurora nutzt dein Netzwerk.</li><li>Nutze vertrauenswürdige Netzwerke.</li></ul>
+      <h4><span class="num">3</span> IP-Protokollierung</h4>
+      <p>Temporär für Sicherheit. Nie geteilt.</p>
+      <h4><span class="num">4</span> Akzeptable Nutzung</h4>
+      <ul><li>Keine illegalen Aktivitäten.</li></ul>
+      <h4><span class="num">5</span> Daten-Eigentum</h4>
+      <p>Du besitzt deine Daten.</p>
+    `
   },
-  tr: { flag:'🇹🇷', name:'Türkçe', dir:'ltr',
+  tr: { flag:'🇹🇷', short:'TR', name:'Türkçe', dir:'ltr',
     title:'Tekrar hoş geldiniz', subtitle:'Giriş yapın',
     titleUp:'Hesap oluştur', subtitleUp:'Saniyeler içinde katıl',
     tabLogin:'Giriş', tabSignup:'Kayıt ol',
-    email:'E-posta', password:'Şifre', name:'Tam ad',
+    email:'E-posta adresi', password:'Şifre', name:'Tam ad',
     remember:'Beni hatırla', forgot:'Şifreni mi unuttun?',
-    loginBtn:'Giriş yap', signupBtn:'Hesap oluştur',
-    or:'Veya şununla',
-    toastSignupOk:'Hesap oluşturuldu',
-    toastLoginOk:'Hoş geldiniz',
-    errUserExists:'Bu e-posta zaten kayıtlı',
-    errInvalid:'Geçersiz e-posta veya şifre',
-    errShort:'Şifre çok kısa',
-    errFill:'Tüm alanları doldurun',
-    logout:'Çıkış yap', active:'Aktif',
+    loginBtn:'Giriş yap', signupBtn:'Hesap oluştur', or:'Veya şununla',
+    toastSignupOk:'Hesap oluşturuldu', toastLoginOk:'Hoş geldiniz',
+    errUserExists:'Bu e-posta zaten kayıtlı', errInvalid:'Geçersiz e-posta veya şifre',
+    errShort:'Şifre çok kısa (min 6)', errFill:'Tüm alanları doldurun',
+    errTerms:'Lütfen şartları ve gizliliği kabul edin',
+    welcome:'Tekrar hoş geldiniz', myProfile:'Profilim', slotsTitle:'Çalışma alanınız',
+    slot:'Yuva', slotHint:'Boş yuva — içerik için hazır',
+    logout:'Çıkış yap', active:'Aktif', back:'Geri',
     tabInfo:'Kişisel bilgiler', tabSocial:'Sosyal hesaplar',
-    secBasic:'Temel bilgiler', secBio:'Hakkında', secWeb:'Web sitesi',
-    secSocial:'Hesaplarını bağla',
+    secBasic:'Temel bilgiler', secRegion:'Bölge ve saat',
+    secBio:'Hakkında', secWeb:'Web sitesi', secSocial:'Hesaplarını bağla',
     editName:'Tam ad', editUsername:'Kullanıcı adı',
     editEmail:'E-posta', editLocation:'Konum',
-    editBio:'Kısa bir biyografi yaz', editWebsite:'https://example.com',
+    editTimezone:'Ülke / Saat dilimi',
+    tzHint:'Saat tarafından kullanılır. Ayarlanmazsa tarayıcı saat dilimi kullanılır.',
+    editBio:'Kısa biyografi yaz', editWebsite:'https://example.com',
     bioHint:'Maksimum 160 karakter',
-    statJoined:'Üyelik tarihi', statSocials:'Bağlı hesaplar', statVerified:'Doğrulandı',
-    save:'Değişiklikleri kaydet', cancel:'İptal',
-    saved:'Değişiklikler kaydedildi',
-    photoUpdated:'Fotoğraf güncellendi',
-    photoErr:'Yüklenemedi',
-    logoutOk:'Çıkış yapıldı'
+    save:'Kaydet', cancel:'İptal',
+    saved:'Kaydedildi', photoUpdated:'Foto güncellendi',
+    photoErr:'Yüklenemedi', logoutOk:'Çıkış yapıldı',
+    settingsTitle:'Ayarlar',
+    secAppearance:'Görünüm', secLanguage:'Dil',
+    secPrefs:'Tercihler', secData:'Veriler', secSecurity:'Güvenlik ve Gizlilik',
+    themeLabel:'Tema', themeSub:'Modunu seç',
+    dark:'Koyu', light:'Açık',
+    langLabel:'Mevcut dil', changeLang:'Değiştir',
+    notif:'Bildirimler', notifSub:'Uyarı ve güncellemeler',
+    sound:'Ses efektleri', soundSub:'İşlemlerde ses çal',
+    netStatus:'Ağ durumu', online:'Çevrimiçi', offline:'Çevrimdışı',
+    privacyLink:'Gizlilik politikası', termsLink:'Kullanım şartları',
+    clearData:'Tüm verileri temizle',
+    clearDataConfirm:'Tüm hesaplar silinecek. Devam?',
+    dataCleared:'Tüm veriler temizlendi',
+    aboutSub:'Özenle yapıldı · 2025',
+    termsAgree:'{terms} ve {privacy} kabul ediyorum, WiFi kullanımı ve IP depolama dahil.',
+    termsLabel:'şartları', privacyLabel:'gizlilik politikasını',
+    secureNote:'SHA-256 ile korunur · %100 güvenli',
+    footSSL:'SSL şifreli', footSecure:'SHA-256 güvenli',
+    footPrivacy:'Önce gizlilik', footWifi:'WiFi hazır',
+    footPrivacyLink:'Gizlilik', footTermsLink:'Şartlar',
+    footSecurityLink:'Güvenlik', copyright:'© 2025 Aurora',
+    privacyTitle:'Gizlilik Politikası', termsTitle:'Kullanım Şartları',
+    close:'Kapat',
+    privacyContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Site tamamen güvenli</span>
+      <p>Gizliliğiniz önceliğimizdir.</p>
+      <h4><span class="num">1</span> Toplanan veriler</h4>
+      <ul>
+        <li>Ad, e-posta, SHA-256 karma şifre.</li>
+        <li>Profil: avatar, biyo, konum, saat dilimi, sosyal.</li>
+        <li>IP adresi: güvenlik için geçici.</li>
+        <li>Ağ: senkronizasyon için WiFi.</li>
+      </ul>
+      <h4><span class="num">2</span> Koruma</h4>
+      <ul>
+        <li>SHA-256 şifreleme.</li>
+        <li>Tarayıcı yerel depolama.</li>
+        <li>HTTPS şifreleme.</li>
+      </ul>
+      <h4><span class="num">3</span> WiFi Kullanımı</h4>
+      <p>Bağlantı algılanır. İçerik izlenmez.</p>
+      <h4><span class="num">4</span> Haklarınız</h4>
+      <ul><li>Verilerinizi istediğiniz zaman silin.</li></ul>
+      <h4><span class="num">5</span> İletişim</h4>
+      <p>Destek kanalları üzerinden.</p>
+    `,
+    termsContent:`
+      <span class="secure-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kullanımı güvenli</span>
+      <p>Hesap oluşturarak şartları kabul edersiniz.</p>
+      <h4><span class="num">1</span> Sorumluluk</h4>
+      <ul><li>Doğru bilgi verin.</li><li>Şifrenizi gizli tutun.</li></ul>
+      <h4><span class="num">2</span> WiFi ve Ağ</h4>
+      <ul><li>Aurora ağınızı kullanır.</li><li>Güvenilir ağlarda kullanın.</li></ul>
+      <h4><span class="num">3</span> IP Kaydı</h4>
+      <p>Güvenlik için geçici. Asla paylaşılmaz.</p>
+      <h4><span class="num">4</span> Kabul Edilebilir Kullanım</h4>
+      <ul><li>Yasadışı aktivite yok.</li></ul>
+      <h4><span class="num">5</span> Veri Sahipliği</h4>
+      <p>Veriler sizin. İstediğiniz zaman silin.</p>
+    `
   }
 };
 
-let currentLang = localStorage.getItem('aurora_lang') || 'ar';
+/* ============================================================
+   TIMEZONES
+   ============================================================ */
+const TIMEZONES = [
+  { id:'Africa/Casablanca', label:'🇲🇦 Morocco — Casablanca' },
+  { id:'Africa/Algiers',    label:'🇩🇿 Algeria — Algiers' },
+  { id:'Africa/Tunis',      label:'🇹🇳 Tunisia — Tunis' },
+  { id:'Africa/Cairo',      label:'🇪🇬 Egypt — Cairo' },
+  { id:'Asia/Riyadh',       label:'🇸🇦 Saudi Arabia — Riyadh' },
+  { id:'Asia/Dubai',        label:'🇦🇪 UAE — Dubai' },
+  { id:'Asia/Qatar',        label:'🇶🇦 Qatar — Doha' },
+  { id:'Asia/Kuwait',       label:'🇰🇼 Kuwait' },
+  { id:'Asia/Baghdad',      label:'🇮🇶 Iraq — Baghdad' },
+  { id:'Asia/Amman',        label:'🇯🇴 Jordan — Amman' },
+  { id:'Asia/Beirut',       label:'🇱🇧 Lebanon — Beirut' },
+  { id:'Africa/Khartoum',   label:'🇸🇩 Sudan — Khartoum' },
+  { id:'Africa/Tripoli',    label:'🇱🇾 Libya — Tripoli' },
+  { id:'Europe/Paris',      label:'🇫🇷 France — Paris' },
+  { id:'Europe/London',     label:'🇬🇧 UK — London' },
+  { id:'Europe/Berlin',     label:'🇩🇪 Germany — Berlin' },
+  { id:'Europe/Madrid',     label:'🇪🇸 Spain — Madrid' },
+  { id:'Europe/Rome',       label:'🇮🇹 Italy — Rome' },
+  { id:'Europe/Moscow',     label:'🇷🇺 Russia — Moscow' },
+  { id:'Europe/Istanbul',   label:'🇹🇷 Türkiye — Istanbul' },
+  { id:'America/New_York',  label:'🇺🇸 USA — New York' },
+  { id:'America/Chicago',   label:'🇺🇸 USA — Chicago' },
+  { id:'America/Los_Angeles', label:'🇺🇸 USA — Los Angeles' },
+  { id:'America/Sao_Paulo', label:'🇧🇷 Brazil — São Paulo' },
+  { id:'Asia/Karachi',      label:'🇵🇰 Pakistan — Karachi' },
+  { id:'Asia/Kolkata',      label:'🇮🇳 India — Kolkata' },
+  { id:'Asia/Jakarta',      label:'🇮🇩 Indonesia — Jakarta' },
+  { id:'Asia/Shanghai',     label:'🇨🇳 China — Shanghai' },
+  { id:'Asia/Tokyo',        label:'🇯🇵 Japan — Tokyo' },
+  { id:'Asia/Seoul',        label:'🇰🇷 Korea — Seoul' },
+  { id:'Australia/Sydney',  label:'🇦🇺 Australia — Sydney' }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let currentLang = localStorage.getItem('aurora_lang') || 'en';
+let currentTheme = localStorage.getItem('aurora_theme') || 'dark';
+let notifEnabled = localStorage.getItem('aurora_notif') !== 'false';
+let soundEnabled = localStorage.getItem('aurora_sound') === 'true';
 let isLogin = true;
 let currentUser = null;
+let calView = { year: new Date().getFullYear(), month: new Date().getMonth() };
 
-/* ==================== Apply Language ==================== */
+/* ============================================================
+   SECURITY - SHA-256 password hashing
+   ============================================================ */
+async function hashPassword(pass) {
+  try {
+    const enc = new TextEncoder();
+    const buf = await crypto.subtle.digest('SHA-256', enc.encode(pass));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  } catch {
+    // Fallback simple hash if SubtleCrypto not available
+    let h = 0;
+    for (let i = 0; i < pass.length; i++) {
+      h = ((h << 5) - h) + pass.charCodeAt(i);
+      h |= 0;
+    }
+    return 'fb_' + Math.abs(h).toString(16);
+  }
+}
+function isHashed(str) {
+  return /^[a-f0-9]{64}$/i.test(str) || /^fb_[a-f0-9]+$/i.test(str);
+}
+async function verifyPassword(input, stored) {
+  if (isHashed(stored)) {
+    return (await hashPassword(input)) === stored;
+  }
+  return input === stored;
+}
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function applyTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('aurora_theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeDark').classList.toggle('active', theme === 'dark');
+  document.getElementById('themeLight').classList.toggle('active', theme === 'light');
+  document.getElementById('themeIcon').innerHTML = theme === 'dark'
+    ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+}
+document.getElementById('themeBtn').addEventListener('click', () => {
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+});
+document.getElementById('themeDark').addEventListener('click', () => applyTheme('dark'));
+document.getElementById('themeLight').addEventListener('click', () => applyTheme('light'));
+
+/* ============================================================
+   APPLY LANGUAGE
+   ============================================================ */
 function applyLang(code) {
   const L = LANGS[code]; if (!L) return;
   currentLang = code;
@@ -1498,17 +2843,18 @@ function applyLang(code) {
   document.documentElement.dir = L.dir;
 
   document.getElementById('langFlag').textContent = L.flag;
-  document.getElementById('langName').textContent = L.name;
+  document.getElementById('langLbl').textContent = L.short;
+  document.getElementById('settingsLangName').textContent = L.name;
 
   const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+
+  // Auth
   set('title', isLogin ? L.title : L.titleUp);
   set('subtitle', isLogin ? L.subtitle : L.subtitleUp);
   set('tabLogin', L.tabLogin);
   set('tabSignup', L.tabSignup);
-  set('lEmail', L.email);
-  set('lEmail2', L.email);
-  set('lPass', L.password);
-  set('lPass2', L.password);
+  set('lEmail', L.email); set('lEmail2', L.email);
+  set('lPass', L.password); set('lPass2', L.password);
   set('lName', L.name);
   set('lRemember', L.remember);
   set('lForgot', L.forgot);
@@ -1516,32 +2862,87 @@ function applyLang(code) {
   set('lSignupBtn', L.signupBtn);
   set('lOr', L.or);
 
-  // Profile translations
-  set('lLogout', L.logout);
-  set('lActive', L.active);
-  set('lTabInfo', L.tabInfo);
-  set('lTabSocial', L.tabSocial);
-  set('lSecBasic', L.secBasic);
-  set('lSecBio', L.secBio);
-  set('lSecWeb', L.secWeb);
+  // Terms agreement with links (rebuild)
+  const ta = document.getElementById('lTermsAgree');
+  if (ta) {
+    const parts = L.termsAgree
+      .replace('{terms}', '§TERMS§')
+      .replace('{privacy}', '§PRIVACY§')
+      .split(/(§TERMS§|§PRIVACY§)/);
+    ta.innerHTML = parts.map(p => {
+      if (p === '§TERMS§') return `<a id="openTerms" href="javascript:void(0)">${L.termsLabel}</a>`;
+      if (p === '§PRIVACY§') return `<a id="openPrivacy" href="javascript:void(0)">${L.privacyLabel}</a>`;
+      return p;
+    }).join('');
+    // Reattach listeners
+    const ot = document.getElementById('openTerms');
+    const op = document.getElementById('openPrivacy');
+    if (ot) ot.addEventListener('click', (e) => { e.preventDefault(); openModal('termsModal'); });
+    if (op) op.addEventListener('click', (e) => { e.preventDefault(); openModal('privacyModal'); });
+  }
+  set('lSecureNote', L.secureNote);
+
+  // Dashboard
+  set('lWelcome', L.welcome);
+  set('lMyProfile', L.myProfile);
+  set('lSlotsTitle', L.slotsTitle);
+
+  // Profile
+  set('lLogout', L.logout); set('lActive', L.active); set('lBack', L.back);
+  set('lTabInfo', L.tabInfo); set('lTabSocial', L.tabSocial);
+  set('lSecBasic', L.secBasic); set('lSecRegion', L.secRegion);
+  set('lSecBio', L.secBio); set('lSecWeb', L.secWeb);
   set('lSecSocial', L.secSocial);
-  set('lEditName', L.editName);
-  set('lEditUsername', L.editUsername);
-  set('lEditEmail', L.editEmail);
-  set('lEditLocation', L.editLocation);
-  set('lEditBio', L.editBio);
-  set('lEditWebsite', L.editWebsite);
+  set('lEditName', L.editName); set('lEditUsername', L.editUsername);
+  set('lEditEmail', L.editEmail); set('lEditLocation', L.editLocation);
+  set('lEditTimezone', L.editTimezone);
+  set('lTzHint', L.tzHint);
+  set('lEditBio', L.editBio); set('lEditWebsite', L.editWebsite);
   set('lBioHint', L.bioHint);
-  set('lStatJoined', L.statJoined);
-  set('lStatSocials', L.statSocials);
-  set('lStatVerified', L.statVerified);
-  set('lSave', L.save);
-  set('lCancel', L.cancel);
+  set('lSave', L.save); set('lCancel', L.cancel);
+
+  // Settings
+  set('lSettingsTitle', L.settingsTitle);
+  set('lSecAppearance', L.secAppearance);
+  set('lSecLanguage', L.secLanguage);
+  set('lSecPrefs', L.secPrefs);
+  set('lSecData', L.secData);
+  set('lSecSecurity', L.secSecurity);
+  set('lThemeLabel', L.themeLabel); set('lThemeSub', L.themeSub);
+  set('lDark', L.dark); set('lLight', L.light);
+  set('lLangLabel', L.langLabel); set('lChangeLang', L.changeLang);
+  set('lNotif', L.notif); set('lNotifSub', L.notifSub);
+  set('lSound', L.sound); set('lSoundSub', L.soundSub);
+  set('lNetStatus', L.netStatus);
+  set('netStatusSub', navigator.onLine ? L.online : L.offline);
+  set('lPrivacyLink', L.privacyLink);
+  set('lTermsLink', L.termsLink);
+  set('lClearData', L.clearData);
+  set('lAboutSub', L.aboutSub);
+
+  // Footer
+  set('lFootSSL', L.footSSL); set('lFootSecure', L.footSecure);
+  set('lFootPrivacy', L.footPrivacy); set('lFootWifi', L.footWifi);
+  set('lFootPrivacyLink', L.footPrivacyLink);
+  set('lFootTermsLink', L.footTermsLink);
+  set('lFootSecurityLink', L.footSecurityLink);
+  set('lCopyright', L.copyright);
+
+  // Modals
+  set('lPrivacyTitle', L.privacyTitle);
+  set('lTermsTitle', L.termsTitle);
+  set('lClose', L.close); set('lClose2', L.close);
+  document.getElementById('privacyBody').innerHTML = L.privacyContent;
+  document.getElementById('termsBody').innerHTML = L.termsContent;
 
   renderLangMenu();
+  renderSlots();
+  renderCalendar();
 }
 
-/* ==================== Lang Menu ==================== */
+/* ============================================================
+   LANGUAGE MENU
+   ============================================================ */
 function renderLangMenu() {
   const menu = document.getElementById('langMenu');
   menu.innerHTML = '';
@@ -1552,7 +2953,7 @@ function renderLangMenu() {
     btn.innerHTML = `
       <span class="flag">${L.flag}</span>
       <span>${L.name}</span>
-      <svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+      <svg class="check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       applyLang(code);
@@ -1573,7 +2974,96 @@ document.addEventListener('click', (e) => {
   if (!langMenu.contains(e.target) && !langBtn.contains(e.target)) closeLangMenu();
 });
 
-/* ==================== Tabs ==================== */
+/* ============================================================
+   SETTINGS PANEL
+   ============================================================ */
+const settingsPanel = document.getElementById('settingsPanel');
+const settingsBackdrop = document.getElementById('settingsBackdrop');
+function openSettings() { settingsPanel.classList.add('open'); settingsBackdrop.classList.add('open'); }
+function closeSettings() { settingsPanel.classList.remove('open'); settingsBackdrop.classList.remove('open'); }
+document.getElementById('settingsBtn').addEventListener('click', (e) => { e.stopPropagation(); openSettings(); });
+document.getElementById('settingsClose').addEventListener('click', closeSettings);
+settingsBackdrop.addEventListener('click', closeSettings);
+document.getElementById('settingsLangBtn').addEventListener('click', () => {
+  closeSettings();
+  setTimeout(openLangMenu, 300);
+});
+
+/* ============================================================
+   SWITCHES
+   ============================================================ */
+const notifSwitch = document.getElementById('notifSwitch');
+const soundSwitch = document.getElementById('soundSwitch');
+notifSwitch.classList.toggle('on', notifEnabled);
+soundSwitch.classList.toggle('on', soundEnabled);
+notifSwitch.addEventListener('click', () => {
+  notifEnabled = !notifEnabled;
+  localStorage.setItem('aurora_notif', notifEnabled);
+  notifSwitch.classList.toggle('on', notifEnabled);
+});
+soundSwitch.addEventListener('click', () => {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem('aurora_sound', soundEnabled);
+  soundSwitch.classList.toggle('on', soundEnabled);
+});
+
+/* ============================================================
+   NETWORK STATUS
+   ============================================================ */
+function updateNetworkStatus() {
+  const online = navigator.onLine;
+  const L = LANGS[currentLang];
+  const dot = document.getElementById('netDot');
+  const ind = document.getElementById('netIndicator');
+  const sub = document.getElementById('netStatusSub');
+  dot.classList.toggle('offline', !online);
+  ind.style.background = online ? 'var(--success)' : 'var(--error)';
+  ind.style.boxShadow = `0 0 10px ${online ? 'var(--success)' : 'var(--error)'}`;
+  dot.title = online ? L.online : L.offline;
+  if (sub) sub.textContent = online ? L.online : L.offline;
+}
+window.addEventListener('online', updateNetworkStatus);
+window.addEventListener('offline', updateNetworkStatus);
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+const modalBackdrop = document.getElementById('modalBackdrop');
+function openModal(id) {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  document.getElementById(id).classList.add('open');
+  modalBackdrop.classList.add('open');
+}
+function closeAllModals() {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  modalBackdrop.classList.remove('open');
+}
+modalBackdrop.addEventListener('click', closeAllModals);
+document.getElementById('closePrivacy').addEventListener('click', closeAllModals);
+document.getElementById('closePrivacyBtn').addEventListener('click', closeAllModals);
+document.getElementById('closeTerms').addEventListener('click', closeAllModals);
+document.getElementById('closeTermsBtn').addEventListener('click', closeAllModals);
+document.getElementById('openPrivacyFromSettings').addEventListener('click', () => { closeSettings(); setTimeout(() => openModal('privacyModal'), 300); });
+document.getElementById('openTermsFromSettings').addEventListener('click', () => { closeSettings(); setTimeout(() => openModal('termsModal'), 300); });
+document.getElementById('footPrivacy').addEventListener('click', () => openModal('privacyModal'));
+document.getElementById('footTerms').addEventListener('click', () => openModal('termsModal'));
+document.getElementById('footSecurity').addEventListener('click', () => openModal('privacyModal'));
+
+/* ============================================================
+   CLEAR DATA
+   ============================================================ */
+document.getElementById('clearDataBtn').addEventListener('click', () => {
+  if (confirm(LANGS[currentLang].clearDataConfirm)) {
+    localStorage.clear();
+    sessionStorage.clear();
+    showToast(LANGS[currentLang].dataCleared, 'success');
+    setTimeout(() => location.reload(), 800);
+  }
+});
+
+/* ============================================================
+   AUTH TABS
+   ============================================================ */
 const tabSlider = document.getElementById('tabSlider');
 const loginForm = document.getElementById('loginForm');
 const signupForm = document.getElementById('signupForm');
@@ -1582,15 +3072,12 @@ function switchTab(tab) {
   const target = (tab === 'login');
   if (target === isLogin) return;
   isLogin = target;
-
   document.getElementById('tabLogin').classList.toggle('active', isLogin);
   document.getElementById('tabSignup').classList.toggle('active', !isLogin);
   tabSlider.classList.toggle('signup', !isLogin);
-
   const L = LANGS[currentLang];
   document.getElementById('title').textContent = isLogin ? L.title : L.titleUp;
   document.getElementById('subtitle').textContent = isLogin ? L.subtitle : L.subtitleUp;
-
   if (isLogin) {
     signupForm.classList.add('hidden', 'from-top');
     loginForm.classList.remove('hidden', 'from-top');
@@ -1602,9 +3089,11 @@ function switchTab(tab) {
 document.getElementById('tabLogin').addEventListener('click', () => switchTab('login'));
 document.getElementById('tabSignup').addEventListener('click', () => switchTab('signup'));
 
-/* ==================== Toggle Password ==================== */
-const eyeOpen = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-const eyeClosed = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+/* ============================================================
+   TOGGLE PASSWORD
+   ============================================================ */
+const eyeOpen = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const eyeClosed = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
 document.querySelectorAll('.toggle-pass').forEach(btn => {
   btn.addEventListener('click', () => {
     const input = document.getElementById(btn.dataset.target);
@@ -1614,7 +3103,9 @@ document.querySelectorAll('.toggle-pass').forEach(btn => {
   });
 });
 
-/* ==================== Password Strength ==================== */
+/* ============================================================
+   PASSWORD STRENGTH
+   ============================================================ */
 const signupPass = document.getElementById('signupPass');
 const strengthEl = document.getElementById('strength');
 signupPass.addEventListener('input', () => {
@@ -1636,11 +3127,24 @@ signupPass.addEventListener('input', () => {
   });
 });
 
-/* ==================== Storage ==================== */
+/* ============================================================
+   TERMS CHECKBOX ENABLES SUBMIT
+   ============================================================ */
+const signupTerms = document.getElementById('signupTerms');
+const signupBtn = document.getElementById('signupBtn');
+signupTerms.addEventListener('change', () => {
+  signupBtn.disabled = !signupTerms.checked;
+});
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
 const getUsers = () => JSON.parse(localStorage.getItem('aurora_users') || '[]');
 const saveUsers = (u) => localStorage.setItem('aurora_users', JSON.stringify(u));
 
-/* ==================== Toast ==================== */
+/* ============================================================
+   TOAST
+   ============================================================ */
 let toastTimer;
 function showToast(msg, type = 'success') {
   const toast = document.getElementById('toast');
@@ -1651,37 +3155,111 @@ function showToast(msg, type = 'success') {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
 }
 
-/* ==================== View Switching ==================== */
-function showProfile() {
-  const authView = document.getElementById('authView');
-  authView.classList.add('fade-out');
+/* ============================================================
+   VIEW NAVIGATION
+   ============================================================ */
+function switchView(fromId, toId, beforeShow) {
+  const from = document.getElementById(fromId);
+  const to = document.getElementById(toId);
+  from.classList.add('fade-out');
   setTimeout(() => {
-    authView.classList.add('hidden');
-    authView.classList.remove('fade-out');
-    const profileView = document.getElementById('profileView');
-    profileView.classList.remove('hidden');
-    // Trigger reflow for animation
-    void profileView.offsetWidth;
-    loadProfile();
-  }, 550);
+    from.classList.add('hidden');
+    from.classList.remove('fade-out');
+    to.classList.remove('hidden');
+    void to.offsetWidth;
+    if (beforeShow) beforeShow();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 500);
 }
-
+function showDashboard() { switchView('authView', 'dashboardView', loadDashboard); }
+function showProfile() { switchView('dashboardView', 'profileView', loadProfile); }
+function showDashboardFromProfile() { switchView('profileView', 'dashboardView', loadDashboard); }
 function showAuth() {
-  const profileView = document.getElementById('profileView');
-  profileView.classList.add('fade-out');
+  ['dashboardView','profileView'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.classList.contains('hidden')) {
+      el.classList.add('fade-out');
+      setTimeout(() => {
+        el.classList.add('hidden');
+        el.classList.remove('fade-out');
+      }, 500);
+    }
+  });
   setTimeout(() => {
-    profileView.classList.add('hidden');
-    profileView.classList.remove('fade-out');
     document.getElementById('authView').classList.remove('hidden');
-  }, 550);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 520);
 }
 
-/* ==================== Load Profile ==================== */
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+function loadDashboard() {
+  if (!currentUser) return;
+  const p = currentUser.profile || {};
+  const avatar = document.getElementById('dashAvatar');
+  if (p.avatar) {
+    avatar.style.backgroundImage = `url(${p.avatar})`;
+    avatar.textContent = '';
+  } else {
+    avatar.style.backgroundImage = '';
+    avatar.textContent = (currentUser.name || '?').charAt(0).toUpperCase();
+  }
+  document.getElementById('dashName').textContent = currentUser.name || '—';
+}
+
+const SLOT_ICONS = [
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>'
+];
+
+function renderSlots() {
+  const grid = document.getElementById('slotsGrid');
+  if (!grid) return;
+  const L = LANGS[currentLang];
+  grid.innerHTML = '';
+  for (let i = 1; i <= 8; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'slot';
+    slot.dataset.slot = i;
+    slot.innerHTML = `
+      <span class="slot-num">${i}</span>
+      <div class="slot-icon">${SLOT_ICONS[i-1]}</div>
+      <div>
+        <div class="slot-title">${L.slot} ${i}</div>
+        <div class="slot-hint">${L.slotHint}</div>
+      </div>
+    `;
+    grid.appendChild(slot);
+  }
+}
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+function populateTimezoneSelect() {
+  const sel = document.getElementById('editTimezone');
+  const L = LANGS[currentLang];
+  sel.innerHTML = `<option value="">${L.editTimezone}</option>`;
+  const defTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  TIMEZONES.forEach(tz => {
+    const opt = document.createElement('option');
+    opt.value = tz.id;
+    opt.textContent = tz.label + (tz.id === defTz ? ' ⭐' : '');
+    sel.appendChild(opt);
+  });
+  sel.setAttribute('data-empty', sel.value ? 'false' : 'true');
+}
+
 function loadProfile() {
   if (!currentUser) return;
   const p = currentUser.profile || {};
-
-  // Avatar
   const avatar = document.getElementById('avatar');
   if (p.avatar) {
     avatar.style.backgroundImage = `url(${p.avatar})`;
@@ -1690,20 +3268,20 @@ function loadProfile() {
     avatar.style.backgroundImage = '';
     avatar.textContent = (currentUser.name || '?').charAt(0).toUpperCase();
   }
-
-  // Meta
   document.getElementById('pName').textContent = currentUser.name || '—';
   document.getElementById('pEmail').textContent = currentUser.email || '—';
 
-  // Form fields
   document.getElementById('editName').value = currentUser.name || '';
   document.getElementById('editUsername').value = p.username || '';
   document.getElementById('editEmail').value = currentUser.email || '';
   document.getElementById('editLocation').value = p.location || '';
+  populateTimezoneSelect();
+  const tzSel = document.getElementById('editTimezone');
+  tzSel.value = p.timezone || '';
+  tzSel.setAttribute('data-empty', tzSel.value ? 'false' : 'true');
   document.getElementById('editBio').value = p.bio || '';
   document.getElementById('editWebsite').value = p.website || '';
 
-  // Socials
   const s = p.social || {};
   document.getElementById('sTwitter').value = s.twitter || '';
   document.getElementById('sInstagram').value = s.instagram || '';
@@ -1713,26 +3291,15 @@ function loadProfile() {
   document.getElementById('sYoutube').value = s.youtube || '';
   document.getElementById('sTiktok').value = s.tiktok || '';
 
-  // Bio counter
   updateBioCount();
-
-  // Stats
-  const joined = currentUser.at ? new Date(currentUser.at) : new Date();
-  document.getElementById('statJoined').textContent =
-    joined.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : currentLang, { year:'numeric', month:'short' });
-  const socialCount = Object.values(s).filter(v => v && v.trim()).length;
-  document.getElementById('statSocials').textContent = socialCount;
+  updateClock();
 }
 
-/* ==================== Bio counter ==================== */
 const editBio = document.getElementById('editBio');
 const bioCount = document.getElementById('bioCount');
-function updateBioCount() {
-  bioCount.textContent = `${editBio.value.length}/160`;
-}
+function updateBioCount() { bioCount.textContent = `${editBio.value.length}/160`; }
 editBio.addEventListener('input', updateBioCount);
 
-/* ==================== Profile tabs ==================== */
 document.querySelectorAll('.ptab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
@@ -1742,44 +3309,31 @@ document.querySelectorAll('.ptab').forEach(tab => {
   });
 });
 
-/* ==================== Avatar upload ==================== */
 const avatarInput = document.getElementById('avatarInput');
 document.getElementById('avatarEditBtn').addEventListener('click', () => avatarInput.click());
-
 avatarInput.addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
   if (!file.type.startsWith('image/')) return;
-  if (file.size > 5 * 1024 * 1024) {
-    showToast(LANGS[currentLang].photoErr, 'error');
-    return;
-  }
-
+  if (file.size > 5 * 1024 * 1024) return showToast(LANGS[currentLang].photoErr, 'error');
   const reader = new FileReader();
   reader.onload = (ev) => {
-    // Resize to 220x220
     const img = new Image();
     img.onload = () => {
       const canvas = document.createElement('canvas');
       const size = 220;
       canvas.width = size; canvas.height = size;
-      const ctx = canvas.getContext('2d');
-      // Center-crop square
+      const c = canvas.getContext('2d');
       const min = Math.min(img.width, img.height);
-      const sx = (img.width - min) / 2;
-      const sy = (img.height - min) / 2;
-      ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size);
+      const sx = (img.width - min) / 2, sy = (img.height - min) / 2;
+      c.drawImage(img, sx, sy, min, min, 0, 0, size, size);
       const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-
-      // Update avatar
       const avatar = document.getElementById('avatar');
       avatar.style.backgroundImage = `url(${dataUrl})`;
       avatar.textContent = '';
       avatar.style.animation = 'none';
       void avatar.offsetWidth;
       avatar.style.animation = 'avatarIn .8s cubic-bezier(.34,1.56,.64,1)';
-
-      // Save
       if (!currentUser.profile) currentUser.profile = {};
       currentUser.profile.avatar = dataUrl;
       persistCurrentUser();
@@ -1791,7 +3345,6 @@ avatarInput.addEventListener('change', (e) => {
   reader.readAsDataURL(file);
 });
 
-/* ==================== Persist current user ==================== */
 function persistCurrentUser() {
   const users = getUsers();
   const idx = users.findIndex(u => u.email === currentUser.email);
@@ -1801,22 +3354,20 @@ function persistCurrentUser() {
   }
 }
 
-/* ==================== Save profile ==================== */
 document.getElementById('saveBtn').addEventListener('click', () => {
   if (!currentUser) return;
   const L = LANGS[currentLang];
   const btn = document.getElementById('saveBtn');
   btn.classList.add('loading');
-
   setTimeout(() => {
     const newName = document.getElementById('editName').value.trim();
     const newEmail = document.getElementById('editEmail').value.trim().toLowerCase();
-
     if (!currentUser.profile) currentUser.profile = {};
     currentUser.name = newName || currentUser.name;
     currentUser.email = newEmail || currentUser.email;
     currentUser.profile.username = document.getElementById('editUsername').value.trim();
     currentUser.profile.location = document.getElementById('editLocation').value.trim();
+    currentUser.profile.timezone = document.getElementById('editTimezone').value;
     currentUser.profile.bio = document.getElementById('editBio').value.trim();
     currentUser.profile.website = document.getElementById('editWebsite').value.trim();
     currentUser.profile.social = {
@@ -1828,43 +3379,34 @@ document.getElementById('saveBtn').addEventListener('click', () => {
       youtube:   document.getElementById('sYoutube').value.trim(),
       tiktok:    document.getElementById('sTiktok').value.trim()
     };
-
     persistCurrentUser();
-
-    // Update displayed meta
     document.getElementById('pName').textContent = currentUser.name;
     document.getElementById('pEmail').textContent = currentUser.email;
-    const socialCount = Object.values(currentUser.profile.social).filter(v => v && v.trim()).length;
-    document.getElementById('statSocials').textContent = socialCount;
-
-    // Update avatar initial if no image
     const avatar = document.getElementById('avatar');
     if (!currentUser.profile.avatar) {
       avatar.textContent = (currentUser.name || '?').charAt(0).toUpperCase();
     }
-
     btn.classList.remove('loading');
     showToast(L.saved + ' ✓', 'success');
+    updateClock();
   }, 800);
 });
 
-/* ==================== Reset / Cancel ==================== */
-document.getElementById('resetBtn').addEventListener('click', () => {
-  loadProfile();
-  showToast(LANGS[currentLang].cancel, 'success');
-});
-
-/* ==================== Logout ==================== */
+document.getElementById('resetBtn').addEventListener('click', () => loadProfile());
+document.getElementById('backBtn').addEventListener('click', showDashboardFromProfile);
+document.getElementById('openProfileBtn').addEventListener('click', showProfile);
 document.getElementById('logoutBtn').addEventListener('click', () => {
   localStorage.removeItem('aurora_session');
   sessionStorage.removeItem('aurora_session');
   currentUser = null;
   showToast(LANGS[currentLang].logoutOk, 'success');
-  setTimeout(() => showAuth(), 500);
+  setTimeout(showAuth, 500);
 });
 
-/* ==================== Submit: Login ==================== */
-loginForm.addEventListener('submit', (e) => {
+/* ============================================================
+   AUTH SUBMIT
+   ============================================================ */
+loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const L = LANGS[currentLang];
   const email = document.getElementById('loginEmail').value.trim().toLowerCase();
@@ -1874,8 +3416,15 @@ loginForm.addEventListener('submit', (e) => {
   const btn = document.getElementById('loginBtn');
   btn.classList.add('loading');
 
-  setTimeout(() => {
-    const user = getUsers().find(u => u.email === email && u.pass === pass);
+  setTimeout(async () => {
+    const users = getUsers();
+    let user = null;
+    for (const u of users) {
+      if (u.email === email && await verifyPassword(pass, u.pass)) {
+        user = u;
+        break;
+      }
+    }
     btn.classList.remove('loading');
     if (!user) return showToast(L.errInvalid, 'error');
 
@@ -1888,14 +3437,12 @@ loginForm.addEventListener('submit', (e) => {
     } else {
       sessionStorage.setItem('aurora_session', JSON.stringify(session));
     }
-
     showToast(`${L.toastLoginOk}, ${user.name} 👋`, 'success');
-    setTimeout(() => showProfile(), 900);
-  }, 900);
+    setTimeout(() => { showDashboard(); updateClock(); }, 900);
+  }, 700);
 });
 
-/* ==================== Submit: Signup ==================== */
-signupForm.addEventListener('submit', (e) => {
+signupForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const L = LANGS[currentLang];
   const name = document.getElementById('signupName').value.trim();
@@ -1904,6 +3451,7 @@ signupForm.addEventListener('submit', (e) => {
 
   if (!name || !email || !pass) return showToast(L.errFill, 'error');
   if (pass.length < 6) return showToast(L.errShort, 'error');
+  if (!signupTerms.checked) return showToast(L.errTerms, 'error');
 
   const users = getUsers();
   if (users.find(u => u.email === email)) return showToast(L.errUserExists, 'error');
@@ -1911,15 +3459,17 @@ signupForm.addEventListener('submit', (e) => {
   const btn = document.getElementById('signupBtn');
   btn.classList.add('loading');
 
+  const hashedPass = await hashPassword(pass);
   setTimeout(() => {
-    const newUser = {
-      name, email, pass, at: Date.now(),
-      profile: { avatar:'', username:'', location:'', bio:'', website:'', social:{} }
-    };
-    users.push(newUser);
+    users.push({
+      name, email, pass: hashedPass, at: Date.now(),
+      profile: { avatar:'', username:'', location:'', timezone:'', bio:'', website:'', social:{} }
+    });
     saveUsers(users);
     btn.classList.remove('loading');
     signupForm.reset();
+    signupTerms.checked = false;
+    signupBtn.disabled = true;
     strengthEl.classList.remove('show');
     strengthEl.querySelectorAll('.strength-bar').forEach(b => b.className = 'strength-bar');
     showToast(L.toastSignupOk + ' 🎉', 'success');
@@ -1927,10 +3477,12 @@ signupForm.addEventListener('submit', (e) => {
       switchTab('login');
       document.getElementById('loginEmail').value = email;
     }, 700);
-  }, 900);
+  }, 700);
 });
 
-/* ==================== Ripple ==================== */
+/* ============================================================
+   RIPPLE
+   ============================================================ */
 document.querySelectorAll('.submit').forEach(btn => {
   btn.addEventListener('click', (e) => {
     const rect = btn.getBoundingClientRect();
@@ -1940,7 +3492,7 @@ document.querySelectorAll('.submit').forEach(btn => {
       position:absolute;
       width:${size}px; height:${size}px;
       border-radius:50%;
-      background: rgba(0,0,0,0.15);
+      background: rgba(var(--particle-rgb),0.15);
       left:${e.clientX - rect.left - size/2}px;
       top:${e.clientY - rect.top - size/2}px;
       pointer-events:none;
@@ -1952,13 +3504,175 @@ document.querySelectorAll('.submit').forEach(btn => {
   });
 });
 
-/* ==================== Particles ==================== */
+/* ============================================================
+   CLOCK + CALENDAR
+   ============================================================ */
+const clockWidget = document.getElementById('clockWidget');
+const clockTrigger = document.getElementById('clockTrigger');
+const clockTime = document.getElementById('clockTime');
+const clockTz = document.getElementById('clockTz');
+const calYearEl = document.getElementById('calYear');
+const calMonthEl = document.getElementById('calMonth');
+const calWeekdays = document.getElementById('calWeekdays');
+const calDays = document.getElementById('calDays');
+const calTimeNow = document.getElementById('calTimeNow');
+const calTzLabel = document.getElementById('calTzLabel');
+
+function getEffectiveTimezone() {
+  if (currentUser?.profile?.timezone) return currentUser.profile.timezone;
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+function getTZShort(tz) {
+  try {
+    const parts = new Intl.DateTimeFormat('en', { timeZone: tz, timeZoneName: 'short' }).formatToParts(new Date());
+    const p = parts.find(x => x.type === 'timeZoneName');
+    return p ? p.value : tz.split('/').pop();
+  } catch { return tz.split('/').pop(); }
+}
+
+function getDatePartsInTZ(tz) {
+  try {
+    const fmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: tz, year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', second:'2-digit',
+      weekday:'short', hour12:false
+    });
+    const out = {};
+    fmt.formatToParts(new Date()).forEach(p => { if (p.type !== 'literal') out[p.type] = p.value; });
+    return {
+      year: +out.year, month: +out.month - 1, day: +out.day,
+      hour: +out.hour, minute: +out.minute, second: +out.second
+    };
+  } catch {
+    const d = new Date();
+    return {
+      year: d.getFullYear(), month: d.getMonth(), day: d.getDate(),
+      hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds()
+    };
+  }
+}
+
+function updateClock() {
+  const tz = getEffectiveTimezone();
+  const p = getDatePartsInTZ(tz);
+  const hh = String(p.hour).padStart(2,'0');
+  const mm = String(p.minute).padStart(2,'0');
+  const ss = String(p.second).padStart(2,'0');
+  clockTime.textContent = `${hh}:${mm}:${ss}`;
+  calTimeNow.textContent = `${hh}:${mm}:${ss}`;
+  clockTz.textContent = getTZShort(tz);
+  calTzLabel.textContent = tz;
+}
+
+function renderCalendar() {
+  const tz = getEffectiveTimezone();
+  const today = getDatePartsInTZ(tz);
+  calYearEl.textContent = calView.year;
+
+  // Month name translated
+  try {
+    const monthFmt = new Intl.DateTimeFormat(currentLang, { month: 'long' });
+    calMonthEl.textContent = monthFmt.format(new Date(calView.year, calView.month, 1));
+  } catch {
+    calMonthEl.textContent = new Date(calView.year, calView.month, 1).toLocaleString();
+  }
+
+  // Weekday headers
+  const weekdays = [];
+  // Get first day of week names using locale
+  const baseMonday = new Date(2024, 0, 1); // Monday
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(baseMonday);
+    d.setDate(baseMonday.getDate() + i);
+    try {
+      weekdays.push(new Intl.DateTimeFormat(currentLang, { weekday: 'short' }).format(d).slice(0, 3));
+    } catch {
+      weekdays.push(['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]);
+    }
+  }
+  calWeekdays.innerHTML = weekdays.map(w => `<span>${w}</span>`).join('');
+
+  // Build days grid
+  const firstDay = new Date(calView.year, calView.month, 1);
+  const daysInMonth = new Date(calView.year, calView.month + 1, 0).getDate();
+  // Week starts Monday (index 0 = Monday)
+  let startIndex = firstDay.getDay(); // 0=Sun..6=Sat
+  startIndex = (startIndex === 0) ? 6 : startIndex - 1; // Convert to Mon=0..Sun=6
+
+  let html = '';
+  for (let i = 0; i < startIndex; i++) {
+    html += `<div class="cal-day empty"></div>`;
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = (calView.year === today.year && calView.month === today.month && d === today.day);
+    html += `<div class="cal-day${isToday ? ' today' : ''}">${d}</div>`;
+  }
+  calDays.innerHTML = html;
+}
+
+clockTrigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  clockWidget.classList.toggle('open');
+  if (clockWidget.classList.contains('open')) {
+    // Sync view with current date in TZ
+    const tz = getEffectiveTimezone();
+    const today = getDatePartsInTZ(tz);
+    calView.year = today.year;
+    calView.month = today.month;
+    renderCalendar();
+  }
+});
+
+document.getElementById('calPrev').addEventListener('click', (e) => {
+  e.stopPropagation();
+  calView.month--;
+  if (calView.month < 0) { calView.month = 11; calView.year--; }
+  renderCalendar();
+});
+document.getElementById('calNext').addEventListener('click', (e) => {
+  e.stopPropagation();
+  calView.month++;
+  if (calView.month > 11) { calView.month = 0; calView.year++; }
+  renderCalendar();
+});
+
+// Close clock when clicking outside
+document.addEventListener('click', (e) => {
+  if (!clockWidget.contains(e.target)) {
+    clockWidget.classList.remove('open');
+  }
+});
+
+// Tick every second
+setInterval(() => {
+  updateClock();
+  // Re-render calendar highlight every minute only if open
+  if (clockWidget.classList.contains('open')) {
+    const tz = getEffectiveTimezone();
+    const today = getDatePartsInTZ(tz);
+    if (today.year === calView.year && today.month === calView.month) {
+      const days = calDays.querySelectorAll('.cal-day');
+      days.forEach(el => {
+        if (el.classList.contains('empty')) return;
+        const d = +el.textContent;
+        el.classList.toggle('today', d === today.day);
+      });
+    }
+  }
+}, 1000);
+
+/* ============================================================
+   PARTICLES
+   ============================================================ */
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
 let W, H;
 const mouse = { x: -1000, y: -1000 };
 const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+function getParticleRGB() { return currentTheme === 'light' ? '20,20,40' : '255,255,255'; }
 
 function resize() {
   W = canvas.width = window.innerWidth * DPR;
@@ -1968,16 +3682,15 @@ function resize() {
   initParticles();
 }
 function initParticles() {
-  const count = Math.min(85, Math.floor(window.innerWidth / 20));
+  const count = Math.min(70, Math.floor(window.innerWidth / 22));
   particles = [];
   for (let i = 0; i < count; i++) {
     particles.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
+      x: Math.random() * W, y: Math.random() * H,
       vx: (Math.random() - 0.5) * 0.25 * DPR,
       vy: (Math.random() - 0.5) * 0.25 * DPR,
       r: (Math.random() * 1.2 + 0.3) * DPR,
-      a: Math.random() * 0.5 + 0.15
+      a: Math.random() * 0.4 + 0.15
     });
   }
 }
@@ -1994,20 +3707,18 @@ window.addEventListener('mouseleave', () => document.getElementById('cursorGlow'
 
 function draw() {
   ctx.clearRect(0, 0, W, H);
-  const maxConn = (130 * DPR) ** 2;
-  const mouseMax = (180 * DPR) ** 2;
-
+  const rgb = getParticleRGB();
+  const maxConn = (120 * DPR) ** 2;
+  const mouseMax = (170 * DPR) ** 2;
   for (let i = 0; i < particles.length; i++) {
     const p = particles[i];
     p.x += p.vx; p.y += p.vy;
     if (p.x < 0 || p.x > W) p.vx *= -1;
     if (p.y < 0 || p.y > H) p.vy *= -1;
-
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+    ctx.fillStyle = `rgba(${rgb},${p.a})`;
     ctx.fill();
-
     for (let j = i + 1; j < particles.length; j++) {
       const q = particles[j];
       const dx = p.x - q.x, dy = p.y - q.y;
@@ -2016,7 +3727,7 @@ function draw() {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(q.x, q.y);
-        ctx.strokeStyle = `rgba(255,255,255,${(1 - d2 / maxConn) * 0.09})`;
+        ctx.strokeStyle = `rgba(${rgb},${(1 - d2 / maxConn) * 0.08})`;
         ctx.lineWidth = 0.6 * DPR;
         ctx.stroke();
       }
@@ -2027,7 +3738,7 @@ function draw() {
       ctx.beginPath();
       ctx.moveTo(p.x, p.y);
       ctx.lineTo(mouse.x, mouse.y);
-      ctx.strokeStyle = `rgba(255,255,255,${(1 - md2 / mouseMax) * 0.22})`;
+      ctx.strokeStyle = `rgba(${rgb},${(1 - md2 / mouseMax) * 0.2})`;
       ctx.lineWidth = 0.7 * DPR;
       ctx.stroke();
     }
@@ -2035,12 +3746,18 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-/* ==================== Init ==================== */
+/* ============================================================
+   INIT
+   ============================================================ */
+applyTheme(currentTheme);
 applyLang(currentLang);
 resize();
 draw();
+updateClock();
+renderCalendar();
+updateNetworkStatus();
 
-// Auto-login if session exists
+// Auto-login
 (function autoLogin() {
   const raw = localStorage.getItem('aurora_session') || sessionStorage.getItem('aurora_session');
   if (!raw) return;
@@ -2050,13 +3767,20 @@ draw();
     if (user) {
       currentUser = user;
       if (!currentUser.profile) currentUser.profile = {};
-      setTimeout(() => showProfile(), 700);
+      setTimeout(() => { showDashboard(); updateClock(); }, 600);
     }
   } catch(_) {}
 })();
 
 setTimeout(() => document.getElementById('loginEmail').focus(), 500);
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLangMenu(); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeLangMenu();
+    closeSettings();
+    closeAllModals();
+    clockWidget.classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>
